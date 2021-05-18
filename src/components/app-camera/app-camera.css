@@ -1,0 +1,27 @@
+.hidden {
+    display: none;
+}
+
+.snap-button {
+    --background: rgba(255,255,255, 0.4);
+    --box-shadow: none;
+}
+
+.circle {
+    font-size: 65px;
+}
+
+.lateral-button {
+    --background: none;
+    --box-shadow: none;
+}
+
+
+.camera-modal .modal-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+video {
+    background-color: black;
+}
