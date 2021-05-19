@@ -21,7 +21,7 @@ export class Camera {
     webcamElement: HTMLVideoElement;
 
     // TODO: not working
-    @Listen('orientationChange', { target: 'window' })
+    @Listen('orientationchange', { target: 'window' })
     onOrientationChange() {
         console.log('holaaaaa')
         this.screenHeight = window.innerHeight;
@@ -37,7 +37,7 @@ export class Camera {
         webcamElement.classList.remove('hidden');
         this.webcamElement.setAttribute('width', this.screenWidth.toString());
         this.webcamElement.setAttribute('height', this.screenHeight.toString());
-        this.webcam = Webcam.init(webcamElement, 'environment', document.createElement('canvas'));
+        this.webcam = Webcam.init(webcamElement, 'user', document.createElement('canvas'));
         this.webcam.start();
     }
 
@@ -73,17 +73,17 @@ export class Camera {
                 ref={el => this.webcamElement = el}
             />,
             <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-                <ion-fab-button class="lateral-button" onClick={() => this.stopWebcam()}>
+                <ion-fab-button onClick={() => this.stopWebcam()}>
                     <ion-icon name="caret-back"></ion-icon>
                 </ion-fab-button>
             </ion-fab>,
             <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-                <ion-fab-button class="snap-button" onClick={() => this.takePicture()}>
+                <ion-fab-button id="takePicButton" class="snap-button" onClick={() => this.takePicture()}>
                     <ion-icon class="circle" name="ellipse"></ion-icon>
                 </ion-fab-button>
             </ion-fab>,
             <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-                <ion-fab-button class="lateral-button" onClick={() => this.flipCam()}>
+                <ion-fab-button onClick={() => this.flipCam()}>
                     <ion-icon name="camera-reverse"></ion-icon>
                 </ion-fab-button>
             </ion-fab>
