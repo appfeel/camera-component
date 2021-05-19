@@ -98,26 +98,23 @@ export class Webcam {
         } else {
             videoConstraints.deviceId = { exact: this._selectedDeviceId };
         }
+        constraints.video = videoConstraints;
         return constraints;
     }
 
     /* Select camera based on facingMode */
     selectCamera() {
-        for (const webcam of this._webcamList) {
-            if ((this._facingMode == 'user' && webcam.label.toLowerCase().includes('front'))
-                || (this._facingMode == 'environment' && webcam.label.toLowerCase().includes('back'))
-            ) {
-                this._selectedDeviceId = webcam.deviceId;
-                break;
-            }
-        }
+        const { deviceId } = this.webcamList.find(wc =>
+            (this._facingMode == 'user' && wc.label.toLowerCase().includes('front'))
+            || (this._facingMode == 'environment' && wc.label.toLowerCase().includes('back'))) || {};
+        this._selectedDeviceId = deviceId;
     }
 
     /* Change Facing mode and selected camera */
     flip() {
         this._facingMode = (this._facingMode == 'user') ? 'environment' : 'user';
         this._webcamElement.style.transform = '';
-        this.selectCamera();
+        this.restart();
     }
 
     /*
@@ -127,36 +124,39 @@ export class Webcam {
       4. Start stream
     */
     async start(startStream = true) {
-        return new Promise((resolve, reject) => {
-            this.stop();
-            navigator.mediaDevices.getUserMedia(this.getMediaConstraints()) // get permisson from user
-                .then((stream) => {
-                    this._streamList.push(stream);
-                    this.info() // get all video input devices info
-                        .then((webcams) => {
-                            this.selectCamera(); // select camera based on facingMode
-                            console.log(webcams);
-                            if (startStream) {
-                                this.stream()
-                                    .then((facingMode) => {
-                                        resolve(this._facingMode);
-                                        console.log(facingMode);
-                                    })
-                                    .catch((error) => {
-                                        reject(error);
-                                    });
-                            } else {
-                                resolve(this._selectedDeviceId);
-                            }
-                        })
-                        .catch((error) => {
-                            reject(error);
-                        });
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+        this.stop();
+        const stream = await navigator.mediaDevices.getUserMedia(this.getMediaConstraints()); // get permisson from user
+        this._streamList.push(stream);
+        const webcams = await this.info(); // get all video input devices info
+        this.selectCamera(); // select camera based on facingMode
+        console.log(webcams);
+        if (startStream) {
+            this._facingMode = await this.stream() as string;
+            console.log(this._facingMode);
+            return this._facingMode;
+        } else {
+            return this._selectedDeviceId;
+        }
+    }
+
+    async restart(startStream = true) {
+        this.stop();
+        const stream = await navigator.mediaDevices.getUserMedia(this.getMediaConstraints()); // get permisson from user
+        this._streamList.push(stream);
+        const webcams = await this.info(); // get all video input devices info
+        this.selectCamera(); // select camera based on facingMode
+        console.log(webcams);
+        if (startStream) {
+            // Peta quan entra a this.stream()
+            console.log('restart')
+            const facingMode = await this.stream();
+            console.log(facingMode);
+            // this._facingMode = await this.stream() as string;
+            // console.log(this._facingMode);
+            return this._facingMode;
+        } else {
+            return this._selectedDeviceId;
+        }
     }
 
     /* Get all video input devices info */
@@ -174,23 +174,34 @@ export class Webcam {
     }
 
     /* Start streaming webcam to video element */
+    // async stream() {
+    //     return new Promise((resolve, reject) => {
+    //         navigator.mediaDevices.getUserMedia(this.getMediaConstraints())
+    //             .then((stream) => {
+    //                 this._streamList.push(stream);
+    //                 this._webcamElement.srcObject = stream;
+    //                 if (this._facingMode == 'user') {
+    //                     this._webcamElement.style.transform = 'scale(-1,1)';
+    //                 }
+    //                 this._webcamElement.play();
+    //                 resolve(this._facingMode);
+    //             })
+    //             .catch((error) => {
+    //                 console.log(error);
+    //                 reject(error);
+    //             });
+    //     });
+    // }
+
     async stream() {
-        return new Promise((resolve, reject) => {
-            navigator.mediaDevices.getUserMedia(this.getMediaConstraints())
-                .then((stream) => {
-                    this._streamList.push(stream);
-                    this._webcamElement.srcObject = stream;
-                    if (this._facingMode == 'user') {
-                        this._webcamElement.style.transform = 'scale(-1,1)';
-                    }
-                    this._webcamElement.play();
-                    resolve(this._facingMode);
-                })
-                .catch((error) => {
-                    console.log(error);
-                    reject(error);
-                });
-        });
+        const stream = await navigator.mediaDevices.getUserMedia(this.getMediaConstraints());
+        this._streamList.push(stream);
+        this._webcamElement.srcObject = stream;
+        if (this._facingMode == 'user') {
+            this._webcamElement.style.transform = 'scale(-1,1)';
+        }
+        this._webcamElement.play();
+        return this._facingMode;
     }
 
     /* Stop streaming webcam */
