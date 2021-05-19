@@ -2,20 +2,24 @@
     display: none;
 }
 
+ion-fab-button {
+    --box-shadow: none;
+    --background: none;
+    --background-hover: none;
+}
+
 .snap-button {
     --background: rgba(255,255,255, 0.4);
-    --box-shadow: none;
+}
+
+.snap-button:active {
+    transform: scale(0.9);
+    transition: all 100ms;
 }
 
 .circle {
     font-size: 65px;
 }
-
-.lateral-button {
-    --background: none;
-    --box-shadow: none;
-}
-
 
 .camera-modal .modal-wrapper {
     width: 100%;
