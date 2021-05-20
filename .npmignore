@@ -1,0 +1,10 @@
+src/
+ssl/
+www/
+.editorconfig
+.gitignore
+.npmignore
+.prettierrc.json
+ionic.config.json
+stencil.config.ts
+tsconfig.json
