@@ -7,8 +7,17 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface AppCamera {
+        /**
+          * Switch between front and back cam
+         */
         "flipCam": () => Promise<void>;
+        /**
+          * Stop the webcam Emits webcamStop event
+         */
         "stopWebcam": () => Promise<void>;
+        /**
+          * Captures the picture Emits picture event
+         */
         "takePicture": () => Promise<void>;
     }
     interface WebcamComponent {
@@ -35,10 +44,16 @@ declare global {
 declare namespace LocalJSX {
     interface AppCamera {
         /**
-          * Return true to keep cam open
+          * Event emitted when back button push Return true to keep cam open
          */
         "onBackButton"?: (event: CustomEvent<boolean>) => void;
+        /**
+          * Event emitted when snap
+         */
         "onPicture"?: (event: CustomEvent<any>) => void;
+        /**
+          * Event emitted when cam stop
+         */
         "onWebcamStop"?: (event: CustomEvent<any>) => void;
     }
     interface WebcamComponent {

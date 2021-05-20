@@ -3,7 +3,7 @@ import { Component, h, Element, Method, Event, EventEmitter, Listen } from '@ste
 import { Webcam } from '../../utils/webcam';
 
 /**
- * 
+ * Webcam component
  */
 @Component({
     tag: 'app-camera',
@@ -15,11 +15,14 @@ export class Camera {
 
     @Element() el: HTMLElement;
 
-    /** */
+    /** Event emitted when snap */
     @Event() picture: EventEmitter;
-    /** */
+    /** Event emitted when cam stop */
     @Event() webcamStop: EventEmitter;
-    /** Return true to keep cam open */
+    /** 
+     * Event emitted when back button push
+     * Return true to keep cam open
+     * */
     @Event() backButton: EventEmitter<boolean>;
     
     webcamElement: HTMLVideoElement;
@@ -43,6 +46,10 @@ export class Camera {
         this.webcam.start();
     }
     
+    /**
+     * Stop the webcam
+     * Emits webcamStop event
+     */
     @Method()
     async stopWebcam() {
         this.webcam.stop();
@@ -57,13 +64,17 @@ export class Camera {
     }
 
     /**
-     * 
+     * Switch between front and back cam
      */
     @Method()
     async flipCam() {
         this.webcam.flip();
     }
 
+    /**
+     * Captures the picture
+     * Emits picture event
+     */
     @Method()
     async takePicture() {
         const snapshot = this.webcam.snap();
