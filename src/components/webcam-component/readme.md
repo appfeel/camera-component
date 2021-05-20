@@ -5,14 +5,28 @@
 <!-- Auto Generated Below -->
 
 
-## Properties
+## Dependencies
 
-| Property | Attribute | Description     | Type     | Default     |
-| -------- | --------- | --------------- | -------- | ----------- |
-| `first`  | `first`   | The first name  | `string` | `undefined` |
-| `last`   | `last`    | The last name   | `string` | `undefined` |
-| `middle` | `middle`  | The middle name | `string` | `undefined` |
+### Depends on
 
+- [app-camera](../app-camera)
+- ion-button
+- ion-icon
+
+### Graph
+```mermaid
+graph TD;
+  webcam-component --> app-camera
+  webcam-component --> ion-button
+  webcam-component --> ion-icon
+  app-camera --> ion-fab
+  app-camera --> ion-fab-button
+  app-camera --> ion-icon
+  ion-fab-button --> ion-icon
+  ion-fab-button --> ion-ripple-effect
+  ion-button --> ion-ripple-effect
+  style webcam-component fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 
