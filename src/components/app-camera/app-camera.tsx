@@ -1,7 +1,10 @@
 /* eslint-disable linebreak-style */
-import { Component, h, Element, Method, Event, EventEmitter, State, Listen } from '@stencil/core';
+import { Component, h, Element, Method, Event, EventEmitter, Listen } from '@stencil/core';
 import { Webcam } from '../../utils/webcam';
 
+/**
+ * 
+ */
 @Component({
     tag: 'app-camera',
     styleUrl: 'app-camera.css',
@@ -12,20 +15,19 @@ export class Camera {
 
     @Element() el: HTMLElement;
 
+    /** */
     @Event() picture: EventEmitter;
-    @Event() closed: EventEmitter;
-    
-    @State() screenHeight: number = window.innerHeight;
-    @State() screenWidth: number = window.innerWidth;
+    /** */
+    @Event() webcamStop: EventEmitter;
+    /** Return true to keep cam open */
+    @Event() backButton: EventEmitter<boolean>;
     
     webcamElement: HTMLVideoElement;
 
-    // TODO: not working
-    @Listen('orientationchange', { target: 'window' })
-    onOrientationChange() {
-        console.log('holaaaaa')
-        this.screenHeight = window.innerHeight;
-        this.screenWidth = window.innerWidth;
+    @Listen('resize', { target: 'window' })
+    onResize() {
+        this.webcamElement.setAttribute('height', window.innerHeight.toString());
+        this.webcamElement.setAttribute('width', window.innerWidth.toString());
     }
 
     componentDidRender() {
@@ -35,25 +37,30 @@ export class Camera {
     startWebcam() {
         const { webcamElement } = this;
         webcamElement.classList.remove('hidden');
-        this.webcamElement.setAttribute('width', this.screenWidth.toString());
-        this.webcamElement.setAttribute('height', this.screenHeight.toString());
+        this.webcamElement.setAttribute('width', window.innerWidth.toString());
+        this.webcamElement.setAttribute('height', window.innerHeight.toString());
         this.webcam = Webcam.init(webcamElement, 'user', document.createElement('canvas'));
         this.webcam.start();
     }
-
-    stopWebcam() {
-        this.webcam.stop();
-        this.closed.emit();
-    }
-
+    
     @Method()
-    async close() {
+    async stopWebcam() {
         this.webcam.stop();
+        this.webcamStop.emit();
     }
 
+    handleBackButton() {
+        const isButtonPush: boolean = true;
+        if (!this.backButton.emit(isButtonPush)) {
+            this.stopWebcam();
+        }
+    }
+
+    /**
+     * 
+     */
     @Method()
     async flipCam() {
-        // TODO
         this.webcam.flip();
     }
 
@@ -73,7 +80,7 @@ export class Camera {
                 ref={el => this.webcamElement = el}
             />,
             <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-                <ion-fab-button onClick={() => this.stopWebcam()}>
+                <ion-fab-button onClick={() => this.handleBackButton()}>
                     <ion-icon name="caret-back"></ion-icon>
                 </ion-fab-button>
             </ion-fab>,

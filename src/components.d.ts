@@ -7,8 +7,8 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface AppCamera {
-        "close": () => Promise<void>;
         "flipCam": () => Promise<void>;
+        "stopWebcam": () => Promise<void>;
         "takePicture": () => Promise<void>;
     }
     interface WebcamComponent {
@@ -34,8 +34,12 @@ declare global {
 }
 declare namespace LocalJSX {
     interface AppCamera {
-        "onClosed"?: (event: CustomEvent<any>) => void;
+        /**
+          * Return true to keep cam open
+         */
+        "onBackButton"?: (event: CustomEvent<boolean>) => void;
         "onPicture"?: (event: CustomEvent<any>) => void;
+        "onWebcamStop"?: (event: CustomEvent<any>) => void;
     }
     interface WebcamComponent {
     }

@@ -10,7 +10,7 @@ import { Component, h, State } from '@stencil/core';
 export class WebcamComponent {
 
     @State() urlB64: any;
-    
+
     webcam: HTMLAppCameraElement;
     imageInput: HTMLInputElement;
     modal: HTMLIonModalElement;
@@ -26,7 +26,7 @@ export class WebcamComponent {
     }
 
     async handlePictureReady(e: CustomEvent<any>) {
-        const {snapshot} = e.detail; 
+        const { snapshot } = e.detail;
         const alert = await alertController.create({
             cssClass: 'my-custom-class',
             header: 'Picture',
@@ -35,8 +35,9 @@ export class WebcamComponent {
                 text: 'Accept',
                 role: 'accept',
                 handler: () => {
-                    this.webcam.close();
-                    this.modal.closest('ion-modal').dismiss(snapshot);
+                    this.webcam.stopWebcam();
+                    this.urlB64 = snapshot;
+                    this.modal.closest('ion-modal').dismiss();
                 },
             },
             {
@@ -50,19 +51,27 @@ export class WebcamComponent {
         await alert.present();
     }
 
-    
+    /**
+     * https://github.com/ionic-team/ionic-framework/issues/new?assignees=&labels=&template=bug_report.md&title=bug%3A+
+     */
+    getCamComponent(): HTMLAppCameraElement {
+        return <app-camera
+            onPicture={(e: any) => this.handlePictureReady(e)}
+            onBackButton={() => this.modal.closest('ion-modal').dismiss()} />;
+    }
+
     async handleTakePhoto() {
         this.webcam = document.createElement('app-camera');
         this.webcam.addEventListener('picture', (e: any) => this.handlePictureReady(e));
-        this.webcam.addEventListener('closed', () => this.modal.closest('ion-modal').dismiss(this.urlB64));
+        this.webcam.addEventListener('backButton', () => { this.modal.closest('ion-modal').dismiss(); this.webcam.stopWebcam(); });
+
+        // this.webcam = this.getCamComponent();
         this.modal = await modalController.create({
             component: this.webcam,
             cssClass: 'camera-modal',
             backdropDismiss: false,
         });
         await this.modal.present();
-        const { data } = await this.modal.onDidDismiss();
-        this.urlB64 = data;
     }
 
     handleOpenGallery() {
