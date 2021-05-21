@@ -6,7 +6,8 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface AppCamera {
+    interface CameraController {
+        "backButtonStopCam": boolean;
         /**
           * Switch between front and back cam
          */
@@ -21,14 +22,19 @@ export namespace Components {
         "takePicture": () => Promise<void>;
     }
     interface WebcamComponent {
+        "open": () => Promise<void>;
+        /**
+          * https://github.com/ionic-team/ionic-framework/issues/new?assignees=&labels=&template=bug_report.md&title=bug%3A+
+         */
+        "openGallery": () => Promise<void>;
     }
 }
 declare global {
-    interface HTMLAppCameraElement extends Components.AppCamera, HTMLStencilElement {
+    interface HTMLCameraControllerElement extends Components.CameraController, HTMLStencilElement {
     }
-    var HTMLAppCameraElement: {
-        prototype: HTMLAppCameraElement;
-        new (): HTMLAppCameraElement;
+    var HTMLCameraControllerElement: {
+        prototype: HTMLCameraControllerElement;
+        new (): HTMLCameraControllerElement;
     };
     interface HTMLWebcamComponentElement extends Components.WebcamComponent, HTMLStencilElement {
     }
@@ -37,16 +43,17 @@ declare global {
         new (): HTMLWebcamComponentElement;
     };
     interface HTMLElementTagNameMap {
-        "app-camera": HTMLAppCameraElement;
+        "camera-controller": HTMLCameraControllerElement;
         "webcam-component": HTMLWebcamComponentElement;
     }
 }
 declare namespace LocalJSX {
-    interface AppCamera {
+    interface CameraController {
+        "backButtonStopCam"?: boolean;
         /**
-          * Event emitted when back button push Return true to keep cam open
+          * Event emitted when back button is pushed
          */
-        "onBackButton"?: (event: CustomEvent<boolean>) => void;
+        "onBackButton"?: (event: CustomEvent<void>) => void;
         /**
           * Event emitted when snap
          */
@@ -57,9 +64,21 @@ declare namespace LocalJSX {
         "onWebcamStop"?: (event: CustomEvent<any>) => void;
     }
     interface WebcamComponent {
+        /**
+          * Event emitted when back button is pushed
+         */
+        "onBackButton"?: (event: CustomEvent<void>) => void;
+        /**
+          * Event emitted when snap
+         */
+        "onPicture"?: (event: CustomEvent<any>) => void;
+        /**
+          * Event emitted when cam stop
+         */
+        "onWebcamStop"?: (event: CustomEvent<any>) => void;
     }
     interface IntrinsicElements {
-        "app-camera": AppCamera;
+        "camera-controller": CameraController;
         "webcam-component": WebcamComponent;
     }
 }
@@ -67,7 +86,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "app-camera": LocalJSX.AppCamera & JSXBase.HTMLAttributes<HTMLAppCameraElement>;
+            "camera-controller": LocalJSX.CameraController & JSXBase.HTMLAttributes<HTMLCameraControllerElement>;
             "webcam-component": LocalJSX.WebcamComponent & JSXBase.HTMLAttributes<HTMLWebcamComponentElement>;
         }
     }

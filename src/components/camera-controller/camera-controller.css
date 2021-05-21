@@ -1,0 +1,61 @@
+.hidden {
+    display: none;
+}
+
+.boton{
+    --box-shadow: none;
+    --background: none;
+    --background-hover: none;
+    --background-activated: red;
+    --background-activated-opacity: 0;
+    --background-focused: none;
+    --background-focused-opacity: 0;
+    --background-hover-opacity: 0;
+    --color-activated: red;
+    --ripple-color: transparent;
+    --background-color: none;
+}
+
+.snap-button {
+    --background: rgba(255,255,255, 0.4);
+}
+
+.snap-button:active {
+    transform: scale(0.9);
+    transition: all 100ms;
+}
+
+.circle {
+    font-size: 66px;
+}
+
+.camera-modal .modal-wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+video {
+    background-color: black;
+}
+
+.fixed {
+    position: fixed;
+    bottom: 20px;
+}
+
+.right {
+    right: 40px;
+}
+
+.righter {
+    right: 5px;
+}
+
+.left {
+    left: 20px;
+}
+
+.center {
+    left: 50%;
+    margin-left: -33px;
+}

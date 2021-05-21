@@ -1,5 +1,5 @@
 import { alertController, modalController } from '@ionic/core';
-import { Component, h, State } from '@stencil/core';
+import { Component, h, Method, State, Event, EventEmitter } from '@stencil/core';
 
 @Component({
     tag: 'webcam-component',
@@ -11,9 +11,40 @@ export class WebcamComponent {
 
     @State() urlB64: any;
 
-    webcam: HTMLAppCameraElement;
+    /** Event emitted when snap */
+    @Event() picture: EventEmitter;
+    /** Event emitted when cam stop */
+    @Event() webcamStop: EventEmitter;
+    /** Event emitted when back button is pushed */
+    @Event() backButton: EventEmitter<void>;
+
+    webcam: HTMLCameraControllerElement;
     imageInput: HTMLInputElement;
     modal: HTMLIonModalElement;
+
+    showPreview: boolean = true;
+
+    // componentDidLoad() {
+    //     // TODO: remove production
+    //     this.open();
+    // }
+
+    @Method()
+    async open() {
+        // TODO: not working
+        // this.webcam = this.getCamComponent();
+
+        this.webcam = document.createElement('camera-controller');
+        this.webcam.addEventListener('picture', (e: any) => this.handlePictureReady(e));
+        this.webcam.addEventListener('backButton', () => this.modal.closest('ion-modal').dismiss());
+
+        this.modal = await modalController.create({
+            component: this.webcam,
+            cssClass: 'camera-component',
+            backdropDismiss: false,
+        });
+        await this.modal.present();
+    }
 
     loadImage() {
         if (this.imageInput.files && this.imageInput.files[0]) {
@@ -27,54 +58,47 @@ export class WebcamComponent {
 
     async handlePictureReady(e: CustomEvent<any>) {
         const { snapshot } = e.detail;
-        const alert = await alertController.create({
-            cssClass: 'my-custom-class',
-            header: 'Picture',
-            message: `<img src='${snapshot}' alt='picture' style='width: 30px; heigth: 30px'>`,
-            buttons: [{
-                text: 'Accept',
-                role: 'accept',
-                handler: () => {
-                    this.webcam.stopWebcam();
-                    this.urlB64 = snapshot;
-                    this.modal.closest('ion-modal').dismiss();
+        if (this.showPreview) {
+            const alert = await alertController.create({
+                cssClass: 'my-custom-class',
+                message: `<img src='${snapshot}' alt='picture' style='width: 30px; heigth: 30px'>`,
+                buttons: [{
+                    text: 'Accept',
+                    role: 'accept',
+                    handler: () => {
+                        this.webcam.stopWebcam();
+                        this.urlB64 = snapshot;
+                        this.modal.closest('ion-modal').dismiss();
+                    },
                 },
-            },
-            {
-                text: 'Cancel',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: () => { },
-            }],
-        });
-
-        await alert.present();
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => { },
+                }],
+            });
+    
+            await alert.present();
+        } else {
+            this.picture.emit(snapshot);
+        }
     }
 
     /**
      * https://github.com/ionic-team/ionic-framework/issues/new?assignees=&labels=&template=bug_report.md&title=bug%3A+
      */
-    getCamComponent(): HTMLAppCameraElement {
-        return <app-camera
-            onPicture={(e: any) => this.handlePictureReady(e)}
-            onBackButton={() => this.modal.closest('ion-modal').dismiss()} />;
-    }
+    // getCamComponent(): HTMLAppCameraElement {
+    //     return <app-camera
+    //         onPicture={(e: any) => this.handlePictureReady(e)}
+    //         onBackButton={() => {
+    //             // this.modal.closest('ion-modal').dismiss();
+    //             return true;
+    //         }} />;
+    // }
 
-    async handleTakePhoto() {
-        this.webcam = document.createElement('app-camera');
-        this.webcam.addEventListener('picture', (e: any) => this.handlePictureReady(e));
-        this.webcam.addEventListener('backButton', () => { this.modal.closest('ion-modal').dismiss(); this.webcam.stopWebcam(); });
-
-        // this.webcam = this.getCamComponent();
-        this.modal = await modalController.create({
-            component: this.webcam,
-            cssClass: 'camera-modal',
-            backdropDismiss: false,
-        });
-        await this.modal.present();
-    }
-
-    handleOpenGallery() {
+    @Method()
+    async openGallery() {
         this.imageInput.value = '';
         this.imageInput.click();
     }
@@ -87,24 +111,25 @@ export class WebcamComponent {
     }
 
     render() {
-        return (
-            <div>
-                {this.renderImage()}
-                <input
-                    type="file"
-                    alt="Imagen anexa"
-                    class="hidden"
-                    accept="image/x-png,image/gif,image/jpeg,image/jpg"
-                    ref={el => this.imageInput = el}
-                    onInput={() => this.loadImage()}
-                />
-                <ion-button onClick={() => this.handleTakePhoto()}>
-                    <ion-icon slot="icon-only" name="camera-outline" />
-                </ion-button>
-                <ion-button onClick={() => this.handleOpenGallery()}>
-                    <ion-icon slot="icon-only" name="image-outline" />
-                </ion-button>
-            </div>
-        );
+        return <camera-controller onPicture={() => this.handlePictureReady} ></camera-controller>;
+        // return (
+        //     <div>
+        //         {this.renderImage()}
+        //         <input
+        //             type="file"
+        //             alt="Imagen anexa"
+        //             class="hidden"
+        //             accept="image/x-png,image/gif,image/jpeg,image/jpg"
+        //             ref={el => this.imageInput = el}
+        //             onInput={() => this.loadImage()}
+        //         />
+        //         <ion-button onClick={() => this.handleTakePhoto()}>
+        //             <ion-icon slot="icon-only" name="camera-outline" />
+        //         </ion-button>
+        //         <ion-button onClick={() => this.handleOpenGallery()}>
+        //             <ion-icon slot="icon-only" name="image-outline" />
+        //         </ion-button>
+        //     </div>
+        // );
     }
 }
