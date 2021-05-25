@@ -5,13 +5,40 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { CamMode } from "./components/camera-component/types";
 export namespace Components {
+    interface CameraComponent {
+        /**
+          * If true, stops cam when back button is pushed
+         */
+        "backButtonStopCam": boolean;
+        /**
+          * Camera mode
+         */
+        "camMode"?: CamMode;
+        /**
+          * Method to open the camera
+          * @param camMode Defaults to embedded
+         */
+        "open": (camMode?: CamMode) => Promise<void>;
+        /**
+          * If true, shows image preview when snap
+         */
+        "showPreview": boolean;
+    }
     interface CameraController {
+        /**
+          * If true, stops cam when back button is pushed
+         */
         "backButtonStopCam": boolean;
         /**
           * Switch between front and back cam
          */
         "flipCam": () => Promise<void>;
+        /**
+          * If true, shows image preview when snap
+         */
+        "showPreview": boolean;
         /**
           * Stop the webcam Emits webcamStop event
          */
@@ -21,34 +48,56 @@ export namespace Components {
          */
         "takePicture": () => Promise<void>;
     }
-    interface WebcamComponent {
-        "open": () => Promise<void>;
-        /**
-          * https://github.com/ionic-team/ionic-framework/issues/new?assignees=&labels=&template=bug_report.md&title=bug%3A+
-         */
-        "openGallery": () => Promise<void>;
-    }
 }
 declare global {
+    interface HTMLCameraComponentElement extends Components.CameraComponent, HTMLStencilElement {
+    }
+    var HTMLCameraComponentElement: {
+        prototype: HTMLCameraComponentElement;
+        new (): HTMLCameraComponentElement;
+    };
     interface HTMLCameraControllerElement extends Components.CameraController, HTMLStencilElement {
     }
     var HTMLCameraControllerElement: {
         prototype: HTMLCameraControllerElement;
         new (): HTMLCameraControllerElement;
     };
-    interface HTMLWebcamComponentElement extends Components.WebcamComponent, HTMLStencilElement {
-    }
-    var HTMLWebcamComponentElement: {
-        prototype: HTMLWebcamComponentElement;
-        new (): HTMLWebcamComponentElement;
-    };
     interface HTMLElementTagNameMap {
+        "camera-component": HTMLCameraComponentElement;
         "camera-controller": HTMLCameraControllerElement;
-        "webcam-component": HTMLWebcamComponentElement;
     }
 }
 declare namespace LocalJSX {
+    interface CameraComponent {
+        /**
+          * If true, stops cam when back button is pushed
+         */
+        "backButtonStopCam"?: boolean;
+        /**
+          * Camera mode
+         */
+        "camMode"?: CamMode;
+        /**
+          * Event emitted when back button is pushed
+         */
+        "onBackButton"?: (event: CustomEvent<void>) => void;
+        /**
+          * Event emitted when snap
+         */
+        "onPicture"?: (event: CustomEvent<any>) => void;
+        /**
+          * Event emitted when cam stop
+         */
+        "onWebcamStop"?: (event: CustomEvent<any>) => void;
+        /**
+          * If true, shows image preview when snap
+         */
+        "showPreview"?: boolean;
+    }
     interface CameraController {
+        /**
+          * If true, stops cam when back button is pushed
+         */
         "backButtonStopCam"?: boolean;
         /**
           * Event emitted when back button is pushed
@@ -59,35 +108,25 @@ declare namespace LocalJSX {
          */
         "onPicture"?: (event: CustomEvent<any>) => void;
         /**
-          * Event emitted when cam stop
+          * Event emitted when cam is stoped
          */
         "onWebcamStop"?: (event: CustomEvent<any>) => void;
-    }
-    interface WebcamComponent {
         /**
-          * Event emitted when back button is pushed
+          * If true, shows image preview when snap
          */
-        "onBackButton"?: (event: CustomEvent<void>) => void;
-        /**
-          * Event emitted when snap
-         */
-        "onPicture"?: (event: CustomEvent<any>) => void;
-        /**
-          * Event emitted when cam stop
-         */
-        "onWebcamStop"?: (event: CustomEvent<any>) => void;
+        "showPreview"?: boolean;
     }
     interface IntrinsicElements {
+        "camera-component": CameraComponent;
         "camera-controller": CameraController;
-        "webcam-component": WebcamComponent;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "camera-component": LocalJSX.CameraComponent & JSXBase.HTMLAttributes<HTMLCameraComponentElement>;
             "camera-controller": LocalJSX.CameraController & JSXBase.HTMLAttributes<HTMLCameraControllerElement>;
-            "webcam-component": LocalJSX.WebcamComponent & JSXBase.HTMLAttributes<HTMLWebcamComponentElement>;
         }
     }
 }
