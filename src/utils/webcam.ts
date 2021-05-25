@@ -8,7 +8,7 @@ export class Webcam {
     private _webcamList: any[];
     private _streamList: any[];
     private _selectedDeviceId: string;
-    private _canvasElement: any;
+    private _canvasElement: HTMLCanvasElement;
     private _snapSoundElement: any;
 
     static instance: Webcam;
