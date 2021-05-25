@@ -1,7 +1,8 @@
 {
   "name": "camera-component",
-  "version": "0.0.1",
-  "description": "Stencil Component Starter",
+  "version": "0.0.2",
+  "description": "Vainilla JavaScript Camera Component",
+  "keywords": ["webcam", "camera", "snapshot", "picture", "take picture", "js snapshot", "js picture", "js camera", "javascript snapshot", "javascript picture", "javascript camera", "html5 snapshot", "html5 picture", "html5 camera"],
   "main": "dist/index.cjs.js",
   "module": "dist/custom-elements/index.js",
   "es2015": "dist/esm/index.mjs",
