@@ -26,6 +26,16 @@
 
 ## Methods
 
+### `close() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `open(camMode?: CamMode) => Promise<void>`
 
 Method to open the camera

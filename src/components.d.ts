@@ -20,6 +20,7 @@ export namespace Components {
           * Camera mode
          */
         "camMode"?: CamMode;
+        "close": () => Promise<void>;
         /**
           * Method to open the camera
           * @param camMode Defaults to embedded
