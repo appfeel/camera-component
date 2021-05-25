@@ -1,18 +1,17 @@
-# Webcam component
+# Vainilla JavaScript Camera Component
 
-A pure Javascript webcam component, made with Stencil.js.
+A pure Javascript camera component, made with Stencil.js.
 
 # API
 
-
-## Pure Javascript
+## Vainilla Javascript
 
 ### Install
 
 Include the following script on the html page:
 
 ```html
-<script type="module" src="node_modules/camera-component/dist/camera-component/camera-component.esm.js"></script>
+<script type="module" src="https://unpkg.com/camera-component/dist/camera-component/camera-component.esm.js"></script>
 ```
 
 ### Camera controller
@@ -24,7 +23,7 @@ This is the low level camera controller. Will emit an event when picture is read
 <html>
 
 <header>
-    <script type="module" src="node_modules/camera-component/dist/camera-component/camera-component.esm.js"></script>
+    <script type="module" src="https://unpkg.com/camera-component/dist/camera-component/camera-component.esm.js"></script>
 </header>
 
 <body>
