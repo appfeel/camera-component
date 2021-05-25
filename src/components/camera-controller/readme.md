@@ -50,7 +50,7 @@ Type: `Promise<void>`
 
 ### Used by
 
- - [webcam-component](../webcam-component)
+ - [camera-component](../camera-component)
 
 ### Depends on
 
@@ -66,7 +66,7 @@ graph TD;
   app-camera --> ion-icon
   ion-fab-button --> ion-icon
   ion-fab-button --> ion-ripple-effect
-  webcam-component --> app-camera
+  camera-component --> app-camera
   style app-camera fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

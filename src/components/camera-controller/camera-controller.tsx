@@ -1,11 +1,7 @@
 /* eslint-disable linebreak-style */
-import { Component, h, Element, Method, Event, EventEmitter, Listen, Prop, State } from '@stencil/core';
+import { Component, h, Element, Method, Event, EventEmitter, Prop, State } from '@stencil/core';
 import { Webcam } from '../../utils/webcam';
 import { arrayBufferToBase64 } from '../../utils/utils';
-
-/**
- * Webcam component
- */
 
 enum CamMode {
     /** Camera is active */
@@ -13,14 +9,17 @@ enum CamMode {
     /** Preview of the picture when it has already been taken */
     preview,
 }
+
+/**
+ * Camera controller component
+ */
 @Component({
     tag: 'camera-controller',
     styleUrl: 'camera-controller.css',
 })
-
 export class CameraController {
 
-    @Element() el: HTMLElement;
+    @Element() el: HTMLCameraControllerElement;
 
     /** Event emitted when snap */
     @Event() picture: EventEmitter;
@@ -29,15 +28,21 @@ export class CameraController {
     /** Event emitted when back button is pushed */
     @Event() backButton: EventEmitter<void>;
 
+    /** If true, allows taking picture from gallery */
+    @Prop() allowGallery: boolean = true;
     /** If true, stops cam when back button is pushed */
     @Prop() backButtonStopCam: boolean = true;
     /** If true, shows image preview when snap */
     @Prop() showPreview: boolean = true;
+    /** Video element width */
+    @Prop() width: number;
+    /** Video element height */
+    @Prop() height: number;
 
     @State() mode: CamMode = CamMode.camera;
 
     webcam: Webcam;
-    webcamElement: HTMLVideoElement;
+    videoElm: HTMLVideoElement;
     imageInput: HTMLInputElement;
     snapshot: string;
     isCamStarted = false;
@@ -48,16 +53,9 @@ export class CameraController {
         }
     }
 
-    @Listen('resize', { target: 'window' })
-    onResize() {
-        this.webcamElement.setAttribute('height', this.el.parentElement.offsetHeight.toString());
-        this.webcamElement.setAttribute('width', this.el.parentElement.offsetWidth.toString());
-    }
-
     startWebcam() {
-        const { webcamElement } = this;
+        const { videoElm: webcamElement } = this;
         webcamElement.classList.remove('hidden');
-        this.onResize();
         this.webcam = Webcam.init(webcamElement, 'user', document.createElement('canvas'));
         this.webcam.start();
         this.isCamStarted = true;
@@ -146,11 +144,13 @@ export class CameraController {
     renderCamera() {
         return [
             <video
-                id="webcam"
+                id="video-elm"
                 class="hidden"
                 autoplay
                 playsinline
-                ref={el => this.webcamElement = el}
+                ref={el => this.videoElm = el}
+                width={this.width}
+                height={this.height}
             />,
 
             <input
@@ -168,9 +168,11 @@ export class CameraController {
             <ion-fab-button id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
                 <ion-icon class="circle" name="ellipse"></ion-icon>
             </ion-fab-button>,
-            <ion-fab-button class="cam-button absolute righter" onClick={() => this.handleOpenGallery()}>
-                <ion-icon name="image-outline"></ion-icon>
-            </ion-fab-button>,
+            this.allowGallery
+                ? <ion-fab-button class="cam-button absolute righter" onClick={() => this.handleOpenGallery()}>
+                    <ion-icon name="image-outline"></ion-icon>
+                </ion-fab-button>
+                : null,
             <ion-fab-button class="cam-button absolute right" onClick={() => this.flipCam()}>
                 <ion-icon name="camera-reverse"></ion-icon>
             </ion-fab-button>
@@ -183,11 +185,11 @@ export class CameraController {
                 {this.renderImage()}
             </div>,
             <ion-footer class='footer'>
-                <ion-button onClick={() => this.handleAcceptPicture()}>
-                    <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+                <ion-button fill="clear" onClick={() => this.handleRejectPicture()}>
+                    <ion-icon slot="icon-only" name="close-outline"></ion-icon>
                 </ion-button>
-                <ion-button onClick={() => this.handleRejectPicture()}>
-                    <ion-icon slot="icon-only" name="cancel"></ion-icon>
+                <ion-button fill="clear" onClick={() => this.handleAcceptPicture()}>
+                    <ion-icon slot="icon-only" name="checkmark"></ion-icon>
                 </ion-button>
             </ion-footer>
         ]

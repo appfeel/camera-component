@@ -9,6 +9,10 @@ import { CamMode } from "./components/camera-component/types";
 export namespace Components {
     interface CameraComponent {
         /**
+          * If true, allows taking picture from gallery
+         */
+        "allowGallery": boolean;
+        /**
           * If true, stops cam when back button is pushed
          */
         "backButtonStopCam": boolean;
@@ -28,6 +32,10 @@ export namespace Components {
     }
     interface CameraController {
         /**
+          * If true, allows taking picture from gallery
+         */
+        "allowGallery": boolean;
+        /**
           * If true, stops cam when back button is pushed
          */
         "backButtonStopCam": boolean;
@@ -35,6 +43,10 @@ export namespace Components {
           * Switch between front and back cam
          */
         "flipCam": () => Promise<void>;
+        /**
+          * Video element height
+         */
+        "height": number;
         /**
           * If true, shows image preview when snap
          */
@@ -47,6 +59,10 @@ export namespace Components {
           * Captures the picture Emits picture event
          */
         "takePicture": () => Promise<void>;
+        /**
+          * Video element width
+         */
+        "width": number;
     }
 }
 declare global {
@@ -69,6 +85,10 @@ declare global {
 }
 declare namespace LocalJSX {
     interface CameraComponent {
+        /**
+          * If true, allows taking picture from gallery
+         */
+        "allowGallery"?: boolean;
         /**
           * If true, stops cam when back button is pushed
          */
@@ -96,9 +116,17 @@ declare namespace LocalJSX {
     }
     interface CameraController {
         /**
+          * If true, allows taking picture from gallery
+         */
+        "allowGallery"?: boolean;
+        /**
           * If true, stops cam when back button is pushed
          */
         "backButtonStopCam"?: boolean;
+        /**
+          * Video element height
+         */
+        "height"?: number;
         /**
           * Event emitted when back button is pushed
          */
@@ -115,6 +143,10 @@ declare namespace LocalJSX {
           * If true, shows image preview when snap
          */
         "showPreview"?: boolean;
+        /**
+          * Video element width
+         */
+        "width"?: number;
     }
     interface IntrinsicElements {
         "camera-component": CameraComponent;

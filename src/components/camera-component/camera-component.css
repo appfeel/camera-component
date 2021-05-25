@@ -1,12 +1,12 @@
-webcam-component :host {
+camera-component :host {
   display: block;
 }
 
-webcam-component .hidden {
+camera-component .hidden {
   display: none;
 }
 
-webcam-component .previewSize {
+camera-component .previewSize {
   max-width: 50px;
   max-height: 50px;
 }

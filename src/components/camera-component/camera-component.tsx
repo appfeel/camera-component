@@ -9,17 +9,19 @@ import { CamMode } from './types';
 })
 export class CameraComponent {
 
-    @Element() el;
+    @Element() el: HTMLCameraComponentElement;
 
     /** Event emitted when snap */
-    @Event() picture: EventEmitter;
+    @Event({ bubbles: true, cancelable: true, composed: true }) picture: EventEmitter;
     /** Event emitted when cam stop */
-    @Event() webcamStop: EventEmitter;
+    @Event({ bubbles: true, cancelable: true, composed: true }) webcamStop: EventEmitter;
     /** Event emitted when back button is pushed */
-    @Event() backButton: EventEmitter<void>;
+    @Event({ bubbles: true, cancelable: true, composed: true }) backButton: EventEmitter<void>;
 
     /** If true, shows image preview when snap */
     @Prop() showPreview: boolean = true;
+    /** If true, allows taking picture from gallery */
+    @Prop() allowGallery: boolean = true;
     /** If true, stops cam when back button is pushed */
     @Prop() backButtonStopCam: boolean = true;
     /** Camera mode */
@@ -27,6 +29,8 @@ export class CameraComponent {
 
     @State() isRenderCam = false;
     @State() urlB64: any;
+    @State() camWidth: number;
+    @State() camHeight: number;
 
     camController: HTMLCameraControllerElement;
     imageInput: HTMLInputElement;
@@ -42,13 +46,13 @@ export class CameraComponent {
     onResize() {
         switch (this.camMode) {
             case CamMode.modal:
-                this.camController.setAttribute('height', window.innerHeight.toString());
-                this.camController.setAttribute('width', window.innerWidth.toString());
+                this.camWidth = window.innerWidth;
+                this.camHeight = window.innerHeight;
 
             case CamMode.embedded:
             default:
-                this.camController.setAttribute('height', this.el.parentElement.offsetHeight.toString());
-                this.camController.setAttribute('width', this.el.parentElement.offsetWidth.toString());
+                this.camWidth = this.el.parentElement.offsetWidth;
+                this.camHeight = this.el.parentElement.offsetHeight;
         }
     }
 
@@ -86,8 +90,6 @@ export class CameraComponent {
                 this.isRenderCam = true;
                 break;
         }
-
-        this.onResize();
     }
 
     /**
@@ -105,17 +107,21 @@ export class CameraComponent {
     renderCam() {
         return (
             <camera-controller
-                ref={el => this.camController = el}
+                ref={el => {
+                    this.camController = el;
+                    this.onResize();
+                }}
                 showPreview={this.showPreview}
                 backButtonStopCam={this.backButtonStopCam}
-            // onPicture={(e) => this.picture.emit(e.detail.snapshot)}
-            // onBackButton={() => this.backButton.emit()}
-            // onWebcamStop={() => this.webcamStop.emit()}
+                width={this.camWidth}
+                height={this.camHeight}
+                onBackButton={() => { this.isRenderCam = false; }}
+                allowGallery={this.allowGallery}
             />
         );
     }
 
     render() {
-        return this.isRenderCam ? this.renderCam : null;
+        return this.isRenderCam ? this.renderCam() : null;
     }
 }
