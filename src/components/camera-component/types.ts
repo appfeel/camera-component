@@ -1,5 +1,7 @@
 
 export enum CamMode {
-    modal = 'modal',
-    embedded = 'embedded',
+    /** Embedded mode, default */
+    embedded,
+    /** Launch camera inside a modal */
+    modal,
 }
