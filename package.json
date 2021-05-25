@@ -1,6 +1,6 @@
 {
   "name": "camera-component",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Vainilla JavaScript Camera Component",
   "keywords": ["webcam", "camera", "snapshot", "picture", "take picture", "js snapshot", "js picture", "js camera", "javascript snapshot", "javascript picture", "javascript camera", "html5 snapshot", "html5 picture", "html5 camera"],
   "main": "dist/index.cjs.js",
