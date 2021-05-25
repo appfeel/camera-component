@@ -95,6 +95,21 @@ export class CameraComponent {
         }
     }
 
+    @Method()
+    async close() {
+        switch (this.camMode) {
+            case CamMode.modal:
+                await this.modal.closest('ion-modal').dismiss();
+                break;
+
+            case CamMode.embedded:
+            default:
+                this.isRenderCam = false;
+                break;
+        }
+
+    }
+
     /**
      * https://github.com/ionic-team/ionic-framework/issues/new?assignees=&labels=&template=bug_report.md&title=bug%3A+
      */
