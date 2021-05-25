@@ -1,60 +1,66 @@
 /* eslint-disable linebreak-style */
 import { Component, h, Element, Method, Event, EventEmitter, Listen, Prop, State } from '@stencil/core';
 import { Webcam } from '../../utils/webcam';
+import { arrayBufferToBase64 } from '../../utils/utils';
 
 /**
  * Webcam component
  */
 
- enum CamMode {
-     camera,
-     preview,
- }
+enum CamMode {
+    /** Camera is active */
+    camera,
+    /** Preview of the picture when it has already been taken */
+    preview,
+}
 @Component({
     tag: 'camera-controller',
     styleUrl: 'camera-controller.css',
 })
 
 export class CameraController {
-    private webcam: Webcam;
 
     @Element() el: HTMLElement;
 
     /** Event emitted when snap */
     @Event() picture: EventEmitter;
-    /** Event emitted when cam stop */
+    /** Event emitted when cam is stoped */
     @Event() webcamStop: EventEmitter;
     /** Event emitted when back button is pushed */
     @Event() backButton: EventEmitter<void>;
 
-    /**  */
-    @Prop() backButtonStopCam = true;
+    /** If true, stops cam when back button is pushed */
+    @Prop() backButtonStopCam: boolean = true;
+    /** If true, shows image preview when snap */
+    @Prop() showPreview: boolean = true;
 
+    @State() mode: CamMode = CamMode.camera;
+
+    webcam: Webcam;
     webcamElement: HTMLVideoElement;
     imageInput: HTMLInputElement;
-    @State() mode: CamMode = CamMode.camera;
-    snapshot: any;
-    showPreview: boolean = true;
+    snapshot: string;
+    isCamStarted = false;
+
+    componentDidRender() {
+        if (this.mode === CamMode.camera && !this.isCamStarted) {
+            this.startWebcam();
+        }
+    }
 
     @Listen('resize', { target: 'window' })
     onResize() {
-        this.webcamElement.setAttribute('height', window.innerHeight.toString());
-        this.webcamElement.setAttribute('width', window.innerWidth.toString());
-    }
-
-    componentDidRender() {
-        if (this.mode === CamMode.camera) {
-            this.startWebcam();
-        }
+        this.webcamElement.setAttribute('height', this.el.parentElement.offsetHeight.toString());
+        this.webcamElement.setAttribute('width', this.el.parentElement.offsetWidth.toString());
     }
 
     startWebcam() {
         const { webcamElement } = this;
         webcamElement.classList.remove('hidden');
-        this.webcamElement.setAttribute('width', window.innerWidth.toString());
-        this.webcamElement.setAttribute('height', window.innerHeight.toString());
+        this.onResize();
         this.webcam = Webcam.init(webcamElement, 'user', document.createElement('canvas'));
         this.webcam.start();
+        this.isCamStarted = true;
     }
 
     /**
@@ -65,6 +71,7 @@ export class CameraController {
     async stopWebcam() {
         this.webcam.stop();
         this.webcamStop.emit();
+        this.isCamStarted = false;
     }
 
     handleBackButton() {
@@ -89,8 +96,9 @@ export class CameraController {
     @Method()
     async takePicture() {
         this.snapshot = this.webcam.snap();
-        const snapshot = this.snapshot
+        const snapshot = this.snapshot;
         if (this.showPreview) {
+            this.stopWebcam();
             this.mode = CamMode.preview;
         } else {
             this.picture.emit({ snapshot });
@@ -115,7 +123,17 @@ export class CameraController {
         if (this.imageInput.files && this.imageInput.files[0]) {
             const reader = new FileReader();
             reader.onloadend = (e) => {
-                this.snapshot = e.target.result;
+                if (e.target.result instanceof ArrayBuffer) {
+                    console.log('Snapshot is arraybuffer', e.target.result);
+                    this.snapshot = `image/base64;data:${arrayBufferToBase64(e.target.result)}`;
+                } else {
+                    this.snapshot = e.target.result.toString();
+                }
+                if (this.showPreview) {
+                    this.mode = CamMode.preview;
+                } else {
+                    this.picture.emit({ snapshot: this.snapshot });
+                }
             };
             reader.readAsDataURL(this.imageInput.files[0]);
         }
@@ -134,17 +152,26 @@ export class CameraController {
                 playsinline
                 ref={el => this.webcamElement = el}
             />,
-            
-            <ion-fab-button class="boton fixed left" onClick={() => this.handleBackButton()}>
+
+            <input
+                type="file"
+                alt="Imagen anexa"
+                class="hidden"
+                accept="image/x-png,image/gif,image/jpeg,image/jpg"
+                ref={el => this.imageInput = el}
+                onInput={() => this.loadImage()}
+            />,
+
+            <ion-fab-button class="cam-button absolute left" onClick={() => this.handleBackButton()}>
                 <ion-icon name="caret-back"></ion-icon>
             </ion-fab-button>,
-            <ion-fab-button id="takePicButton" class="boton fixed snap-button center" onClick={() => this.takePicture()}>
+            <ion-fab-button id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
                 <ion-icon class="circle" name="ellipse"></ion-icon>
             </ion-fab-button>,
-            <ion-fab-button class="boton fixed righter" onClick={() => this.handleOpenGallery()}>
+            <ion-fab-button class="cam-button absolute righter" onClick={() => this.handleOpenGallery()}>
                 <ion-icon name="image-outline"></ion-icon>
             </ion-fab-button>,
-            <ion-fab-button class="boton fixed right" onClick={() => this.flipCam()}>
+            <ion-fab-button class="cam-button absolute right" onClick={() => this.flipCam()}>
                 <ion-icon name="camera-reverse"></ion-icon>
             </ion-fab-button>
         ];
@@ -155,16 +182,14 @@ export class CameraController {
             <div>
                 {this.renderImage()}
             </div>,
-            <input
-                type="file"
-                alt="Imagen anexa"
-                class="hidden"
-                accept="image/x-png,image/gif,image/jpeg,image/jpg"
-                ref={el => this.imageInput = el}
-                onInput={() => this.loadImage()}
-            />,
-            <ion-button onClick={() => this.handleAcceptPicture()}>Accept</ion-button>,
-            <ion-button onClick={() => this.handleRejectPicture()}>Cancel</ion-button>
+            <ion-footer class='footer'>
+                <ion-button onClick={() => this.handleAcceptPicture()}>
+                    <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+                </ion-button>
+                <ion-button onClick={() => this.handleRejectPicture()}>
+                    <ion-icon slot="icon-only" name="cancel"></ion-icon>
+                </ion-button>
+            </ion-footer>
         ]
     }
 
