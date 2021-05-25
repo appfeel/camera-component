@@ -38,7 +38,7 @@ export class CameraComponent {
 
     componentDidLoad() {
         if (this.camMode) {
-            this.open(this.camMode);
+            this.start(this.camMode);
         }
     }
 
@@ -61,7 +61,7 @@ export class CameraComponent {
      * @param camMode Defaults to embedded
      */
     @Method()
-    async open(camMode?: CamMode) {
+    async start(camMode?: CamMode) {
         this.camMode = camMode;
         switch (this.camMode) {
             case CamMode.modal:
@@ -96,7 +96,7 @@ export class CameraComponent {
     }
 
     @Method()
-    async close() {
+    async stop() {
         switch (this.camMode) {
             case CamMode.modal:
                 await this.modal.closest('ion-modal').dismiss();
