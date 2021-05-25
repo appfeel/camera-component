@@ -1,31 +1,24 @@
-.hidden {
+camera-controller .hidden {
     display: none;
 }
 
-.boton{
+camera-controller .cam-button{
     --box-shadow: none;
     --background: none;
     --background-hover: none;
-    --background-activated: red;
-    --background-activated-opacity: 0;
-    --background-focused: none;
-    --background-focused-opacity: 0;
-    --background-hover-opacity: 0;
-    --color-activated: red;
     --ripple-color: transparent;
-    --background-color: none;
 }
 
-.snap-button {
+camera-controller .snap-button {
     --background: rgba(255,255,255, 0.4);
 }
 
-.snap-button:active {
+camera-controller .snap-button:active {
     transform: scale(0.9);
     transition: all 100ms;
 }
 
-.circle {
+camera-controller .circle {
     font-size: 66px;
 }
 
@@ -34,28 +27,41 @@
     height: 100%;
 }
 
-video {
+camera-controller video {
     background-color: black;
+    width: 100%;
+    position: relative;
 }
 
-.fixed {
-    position: fixed;
+camera-controller .absolute {
+    position: absolute;
     bottom: 20px;
 }
 
-.right {
+camera-controller .right {
     right: 40px;
 }
 
-.righter {
+camera-controller .righter {
     right: 5px;
 }
 
-.left {
+camera-controller .left {
     left: 20px;
 }
 
-.center {
+camera-controller .center {
     left: 50%;
     margin-left: -33px;
+}
+
+camera-controller .picture {
+    width: 100%;
+}
+
+camera-controller .footer {
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    background-color: white;
 }
