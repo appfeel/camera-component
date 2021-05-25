@@ -1,5 +1,5 @@
 
 export enum CamMode {
-    modal,
-    embedded,
+    modal = 'modal',
+    embedded = 'embedded',
 }
