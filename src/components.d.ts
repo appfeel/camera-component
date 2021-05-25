@@ -20,16 +20,16 @@ export namespace Components {
           * Camera mode
          */
         "camMode"?: CamMode;
-        "close": () => Promise<void>;
-        /**
-          * Method to open the camera
-          * @param camMode Defaults to embedded
-         */
-        "open": (camMode?: CamMode) => Promise<void>;
         /**
           * If true, shows image preview when snap
          */
         "showPreview": boolean;
+        /**
+          * Method to open the camera
+          * @param camMode Defaults to embedded
+         */
+        "start": (camMode?: CamMode) => Promise<void>;
+        "stop": () => Promise<void>;
     }
     interface CameraController {
         /**

@@ -26,9 +26,9 @@
 
 ## Methods
 
-### `close() => Promise<void>`
+### `start(camMode?: CamMode) => Promise<void>`
 
-
+Method to open the camera
 
 #### Returns
 
@@ -36,9 +36,9 @@ Type: `Promise<void>`
 
 
 
-### `open(camMode?: CamMode) => Promise<void>`
+### `stop() => Promise<void>`
 
-Method to open the camera
+
 
 #### Returns
 
