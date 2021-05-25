@@ -46,8 +46,8 @@ export class CameraComponent {
     onResize() {
         switch (this.camMode) {
             case CamMode.modal:
-                this.camWidth = window.innerWidth;
-                this.camHeight = window.innerHeight;
+                this.camWidth = document.body.offsetWidth;
+                this.camHeight = document.body.offsetHeight;
 
             case CamMode.embedded:
             default:
@@ -68,6 +68,7 @@ export class CameraComponent {
                 // TODO: not working
                 // this.webcam = this.getCamComponent();
 
+                this.onResize();
                 this.camController = document.createElement('camera-controller');
                 this.camController.addEventListener('picture', (e: any) => this.picture.emit(e.detail.snapshot));
                 this.camController.addEventListener('backButton', () => { this.modal.closest('ion-modal').dismiss(); this.backButton.emit(); });
@@ -80,6 +81,8 @@ export class CameraComponent {
                     componentProps: {
                         showPreview: this.showPreview,
                         backButtonStopCam: this.backButtonStopCam,
+                        width: this.camWidth,
+                        height: this.camHeight,
                     }
                 });
                 await this.modal.present();
