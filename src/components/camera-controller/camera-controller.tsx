@@ -2,6 +2,7 @@
 import { Component, h, Element, Method, Event, EventEmitter, Prop, State } from '@stencil/core';
 import { Webcam } from '../../utils/webcam';
 import { arrayBufferToBase64 } from '../../utils/utils';
+import { CamOrientation } from '../../utils/webcam.types';
 
 enum CamMode {
     /** Camera is active */
@@ -38,6 +39,12 @@ export class CameraController {
     @Prop() width: number;
     /** Video element height */
     @Prop() height: number;
+    // TODO: FET prop in parent
+    /** Camera selected
+     * - user: front camera
+     * - environtment: back camera
+     */
+    @Prop() orientation: CamOrientation = CamOrientation.environment;
 
     @State() mode: CamMode = CamMode.camera;
 
@@ -56,7 +63,7 @@ export class CameraController {
     startWebcam() {
         const { videoElm: webcamElement } = this;
         webcamElement.classList.remove('hidden');
-        this.webcam = Webcam.init(webcamElement, 'user', document.createElement('canvas'));
+        this.webcam = Webcam.init(webcamElement, this.orientation, document.createElement('canvas'));
         this.webcam.start();
         this.isCamStarted = true;
     }
@@ -141,7 +148,9 @@ export class CameraController {
         return <img class="picture" src={this.snapshot} alt="picture" />;
     }
 
+    // TODO: renderització botons camara i del preview
     renderCamera() {
+        console.log('renderCamera', this.width, this.height);
         return [
             <video
                 id="video-elm"
