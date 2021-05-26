@@ -1,10 +1,12 @@
+import { CamOrientation } from "./webcam.types";
+
 /**
  * Manage webcam functions
  */
 export class Webcam {
 
     private _webcamElement: any;
-    private _facingMode: string;
+    private _facingMode: CamOrientation;
     private _webcamList: any[];
     private _streamList: any[];
     private _selectedDeviceId: string;
@@ -33,7 +35,7 @@ export class Webcam {
      * @param canvasElement 
      * @param snapSoundElement 
      */
-    static init(webcamElement: HTMLVideoElement, facingMode: 'environment' | 'user' = 'user', canvasElement: HTMLCanvasElement = null, snapSoundElement: HTMLAudioElement = null) {
+    static init(webcamElement: HTMLVideoElement, facingMode: CamOrientation = CamOrientation.user, canvasElement: HTMLCanvasElement = null, snapSoundElement: HTMLAudioElement = null) {
         let { instance } = Webcam;
 
         if (!instance) {
@@ -43,6 +45,10 @@ export class Webcam {
         instance._webcamElement = webcamElement;
         instance._webcamElement.width = instance._webcamElement.width || 640;
         instance._webcamElement.height = instance._webcamElement.height || instance._webcamElement.width * (3 / 4);
+        // TODO: FET si no és ni user ni environment ==> environment
+        if (facingMode !== CamOrientation.environment && facingMode !== CamOrientation.user) {
+            facingMode = CamOrientation.environment;
+        }
         instance._facingMode = facingMode;
         instance._webcamList = [];
         instance._streamList = [];
@@ -85,7 +91,7 @@ export class Webcam {
             }
         });
         if (this._webcamList.length == 1) {
-            this._facingMode = 'user';
+            this._facingMode = CamOrientation.user;
         }
         return this._webcamList;
     }
@@ -113,8 +119,8 @@ export class Webcam {
      */
     selectCamera() {
         const { deviceId } = this.webcamList.find(wc =>
-            (this._facingMode == 'user' && wc.label.toLowerCase().includes('front'))
-            || (this._facingMode == 'environment' && wc.label.toLowerCase().includes('back'))) || {};
+            (this._facingMode == CamOrientation.user && wc.label.toLowerCase().includes('front'))
+            || (this._facingMode == CamOrientation.environment && wc.label.toLowerCase().includes('back'))) || {};
         this._selectedDeviceId = deviceId;
     }
 
@@ -122,7 +128,7 @@ export class Webcam {
      * Change Facing mode and selected camera
      */
     flip() {
-        this._facingMode = (this._facingMode == 'user') ? 'environment' : 'user';
+        this._facingMode = (this._facingMode == CamOrientation.user) ? CamOrientation.environment : CamOrientation.user;
         this._webcamElement.style.transform = '';
         this.restart();
     }
@@ -142,7 +148,7 @@ export class Webcam {
         this.selectCamera(); // select camera based on facingMode
         console.log(webcams);
         if (startStream) {
-            this._facingMode = await this.stream() as string;
+            this._facingMode = await this.stream() as CamOrientation;
             console.log(this._facingMode);
             return this._facingMode;
         } else {
@@ -161,7 +167,7 @@ export class Webcam {
         this.stop();
         this.selectCamera(); // select camera based on facingMode
         if (startStream) {
-            this._facingMode = await this.stream() as string;
+            this._facingMode = await this.stream() as CamOrientation;
             console.log(this._facingMode);
             return this._facingMode;
         } else {
@@ -185,7 +191,7 @@ export class Webcam {
         const stream = await navigator.mediaDevices.getUserMedia(this.getMediaConstraints());
         this._streamList.push(stream);
         this._webcamElement.srcObject = stream;
-        if (this._facingMode == 'user') {
+        if (this._facingMode == CamOrientation.user) {
             this._webcamElement.style.transform = 'scale(-1,1)';
         }
         this._webcamElement.play();
@@ -214,7 +220,7 @@ export class Webcam {
             this._canvasElement.height = this._webcamElement.scrollHeight;
             this._canvasElement.width = this._webcamElement.scrollWidth;
             const context = this._canvasElement.getContext('2d');
-            if (this._facingMode == 'user') {
+            if (this._facingMode == CamOrientation.user) {
                 context.translate(this._canvasElement.width, 0);
                 context.scale(-1, 1);
             }

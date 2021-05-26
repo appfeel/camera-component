@@ -6,6 +6,7 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { CamMode } from "./components/camera-component/types";
+import { CamOrientation } from "./utils/webcam.types";
 export namespace Components {
     interface CameraComponent {
         /**
@@ -20,6 +21,10 @@ export namespace Components {
           * Camera mode
          */
         "camMode"?: CamMode;
+        /**
+          * Camera selected - user: front camera - environtment: back camera
+         */
+        "orientation": CamOrientation;
         /**
           * If true, shows image preview when snap
          */
@@ -48,6 +53,10 @@ export namespace Components {
           * Video element height
          */
         "height": number;
+        /**
+          * Camera selected - user: front camera - environtment: back camera
+         */
+        "orientation": CamOrientation;
         /**
           * If true, shows image preview when snap
          */
@@ -111,6 +120,10 @@ declare namespace LocalJSX {
          */
         "onWebcamStop"?: (event: CustomEvent<any>) => void;
         /**
+          * Camera selected - user: front camera - environtment: back camera
+         */
+        "orientation"?: CamOrientation;
+        /**
           * If true, shows image preview when snap
          */
         "showPreview"?: boolean;
@@ -140,6 +153,10 @@ declare namespace LocalJSX {
           * Event emitted when cam is stoped
          */
         "onWebcamStop"?: (event: CustomEvent<any>) => void;
+        /**
+          * Camera selected - user: front camera - environtment: back camera
+         */
+        "orientation"?: CamOrientation;
         /**
           * If true, shows image preview when snap
          */
