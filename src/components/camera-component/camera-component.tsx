@@ -1,5 +1,6 @@
 import { modalController } from '@ionic/core';
 import { Component, h, Method, State, Event, EventEmitter, Prop, Listen, Element } from '@stencil/core';
+import { CamOrientation } from '../../utils/webcam.types';
 import { CamMode } from './types';
 
 @Component({
@@ -26,6 +27,11 @@ export class CameraComponent {
     @Prop() backButtonStopCam: boolean = true;
     /** Camera mode */
     @Prop({ mutable: true }) camMode?: CamMode;
+    /** Camera selected
+     * - user: front camera
+     * - environtment: back camera
+     */
+    @Prop() orientation: CamOrientation = CamOrientation.environment;
 
     @State() isRenderCam = false;
     @State() urlB64: any;
@@ -35,6 +41,7 @@ export class CameraComponent {
     camController: HTMLCameraControllerElement;
     imageInput: HTMLInputElement;
     modal: HTMLIonModalElement;
+    isStarted = false;
 
     componentDidLoad() {
         if (this.camMode) {
@@ -62,52 +69,65 @@ export class CameraComponent {
      */
     @Method()
     async start(camMode?: CamMode) {
-        this.camMode = camMode;
-        switch (this.camMode) {
-            case CamMode.modal:
-                // TODO: not working
-                // this.webcam = this.getCamComponent();
+        if (!this.isStarted) {
+            this.isStarted = true;
+            this.camMode = camMode;
+            switch (this.camMode) {
+                case CamMode.modal:
+                    // TODO: not working
+                    // this.webcam = this.getCamComponent();
 
-                this.onResize();
-                this.camController = document.createElement('camera-controller');
-                this.camController.addEventListener('picture', (e: any) => this.picture.emit(e.detail.snapshot));
-                this.camController.addEventListener('backButton', () => { this.modal.closest('ion-modal').dismiss(); this.backButton.emit(); });
-                this.camController.addEventListener('webcamStop', () => this.webcamStop.emit());
+                    this.onResize();
+                    this.camController = document.createElement('camera-controller');
+                    this.camController.addEventListener('picture', (e: any) => this.picture.emit(e.detail.snapshot));
+                    this.camController.addEventListener('backButton', () => { this.modal.closest('ion-modal').dismiss(); this.backButton.emit(); this.isStarted = false});
+                    this.camController.addEventListener('webcamStop', () => this.webcamStop.emit());
 
-                this.modal = await modalController.create({
-                    component: this.camController,
-                    cssClass: 'camera-modal',
-                    backdropDismiss: false,
-                    componentProps: {
-                        showPreview: this.showPreview,
-                        backButtonStopCam: this.backButtonStopCam,
-                        width: this.camWidth,
-                        height: this.camHeight,
-                    }
-                });
-                await this.modal.present();
-                break;
+                    this.modal = await modalController.create({
+                        component: this.camController,
+                        cssClass: 'camera-modal',
+                        backdropDismiss: false,
+                        componentProps: {
+                            showPreview: this.showPreview,
+                            backButtonStopCam: this.backButtonStopCam,
+                            width: this.camWidth,
+                            height: this.camHeight,
+                            orientation: this.orientation,
+                        }
+                    });
+                    await this.modal.present();
+                    break;
 
-            case CamMode.embedded:
-            default:
-                this.isRenderCam = true;
-                break;
+                case CamMode.embedded:
+                default:
+                    this.isRenderCam = true;
+                    break;
+            }
+        }
+        // TODO: documentar: quan es crida stop abans que acabi start
+        if (!this.isStarted) {
+            await this.stop();
         }
     }
 
     @Method()
     async stop() {
-        switch (this.camMode) {
-            case CamMode.modal:
-                await this.modal.closest('ion-modal').dismiss();
-                break;
+        if (this.isStarted) {
+            this.isStarted = false;
+            switch (this.camMode) {
+                case CamMode.modal:
+                    if (this.modal) {
+                        await this.modal.closest('ion-modal').dismiss();
+                        this.modal = undefined;
+                    }
+                    break;
 
-            case CamMode.embedded:
-            default:
-                this.isRenderCam = false;
-                break;
+                case CamMode.embedded:
+                default: 
+                    this.isRenderCam = false;
+                    break;
+            }
         }
-
     }
 
     /**
@@ -135,11 +155,26 @@ export class CameraComponent {
                 height={this.camHeight}
                 onBackButton={() => { this.isRenderCam = false; }}
                 allowGallery={this.allowGallery}
+                orientation={this.orientation}
             />
         );
     }
 
+    renderModal() {
+        if (this.modal) {
+            // TODO canviar props del modal
+            console.log('renderModal', this.camWidth, this.camHeight);
+            this.modal.componentProps = {
+                showPreview: this.showPreview,
+                backButtonStopCam: this.backButtonStopCam,
+                width: this.camWidth,
+                height: this.camHeight,
+            };
+        }
+        return null;
+    }
+
     render() {
-        return this.isRenderCam ? this.renderCam() : null;
+        return this.isRenderCam ? this.renderCam() : this.renderModal();
     }
 }
