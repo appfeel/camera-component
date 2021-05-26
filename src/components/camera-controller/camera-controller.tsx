@@ -212,7 +212,7 @@ export class CameraController {
                     <ion-icon slot="icon-only" name="checkmark"></ion-icon>
                 </ion-button>
             </ion-footer>
-        ]
+        ];
     }
 
     render() {
