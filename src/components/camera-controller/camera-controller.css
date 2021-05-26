@@ -30,6 +30,9 @@ camera-controller .circle {
 camera-controller video {
     background-color: black;
     width: 100%;
+}
+
+camera-controller .relative {
     position: relative;
 }
 

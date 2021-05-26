@@ -129,6 +129,7 @@ export class CameraController {
             const reader = new FileReader();
             reader.onloadend = (e) => {
                 if (e.target.result instanceof ArrayBuffer) {
+                    //TODO: comprovar array buffer
                     console.log('Snapshot is arraybuffer', e.target.result);
                     this.snapshot = `image/base64;data:${arrayBufferToBase64(e.target.result)}`;
                 } else {
@@ -148,43 +149,53 @@ export class CameraController {
         return <img class="picture" src={this.snapshot} alt="picture" />;
     }
 
-    // TODO: renderització botons camara i del preview
+    renderGalleryButton() {
+        if (this.allowGallery) {
+            return (
+                <ion-fab-button class="cam-button absolute righter" onClick={() => this.handleOpenGallery()}>
+                    <ion-icon name="image-outline"></ion-icon>
+                </ion-fab-button>
+            );
+        }
+        return null;
+    }
+
+    // TODO: FET renderització botons camara 
+    // TODO: renderització del preview
     renderCamera() {
         console.log('renderCamera', this.width, this.height);
         return [
-            <video
-                id="video-elm"
-                class="hidden"
-                autoplay
-                playsinline
-                ref={el => this.videoElm = el}
-                width={this.width}
-                height={this.height}
-            />,
+            <div class="relative">
+                <video
+                    id="video-elm"
+                    class="hidden"
+                    autoplay
+                    playsinline
+                    ref={el => this.videoElm = el}
+                    width={this.width}
+                    height={this.height}
+                />
 
-            <input
-                type="file"
-                alt="Imagen anexa"
-                class="hidden"
-                accept="image/x-png,image/gif,image/jpeg,image/jpg"
-                ref={el => this.imageInput = el}
-                onInput={() => this.loadImage()}
-            />,
+                <input
+                    type="file"
+                    alt="Imagen anexa"
+                    class="hidden"
+                    accept="image/x-png,image/gif,image/jpeg,image/jpg"
+                    ref={el => this.imageInput = el}
+                    onInput={() => this.loadImage()}
+                />
 
-            <ion-fab-button class="cam-button absolute left" onClick={() => this.handleBackButton()}>
-                <ion-icon name="caret-back"></ion-icon>
-            </ion-fab-button>,
-            <ion-fab-button id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
-                <ion-icon class="circle" name="ellipse"></ion-icon>
-            </ion-fab-button>,
-            this.allowGallery
-                ? <ion-fab-button class="cam-button absolute righter" onClick={() => this.handleOpenGallery()}>
-                    <ion-icon name="image-outline"></ion-icon>
+                <ion-fab-button class="cam-button absolute left" onClick={() => this.handleBackButton()}>
+                    <ion-icon name="caret-back"></ion-icon>
                 </ion-fab-button>
-                : null,
-            <ion-fab-button class="cam-button absolute right" onClick={() => this.flipCam()}>
-                <ion-icon name="camera-reverse"></ion-icon>
-            </ion-fab-button>
+                <ion-fab-button id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
+                    <ion-icon class="circle" name="ellipse"></ion-icon>
+                </ion-fab-button>
+                {this.renderGalleryButton()}
+                <ion-fab-button class="cam-button absolute right" onClick={() => this.flipCam()}>
+                    <ion-icon name="camera-reverse"></ion-icon>
+                </ion-fab-button>
+            </div>
         ];
     }
 
