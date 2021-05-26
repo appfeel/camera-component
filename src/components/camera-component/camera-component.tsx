@@ -52,12 +52,12 @@ export class CameraComponent {
     @Listen('resize', { target: 'window' })
     onResize() {
         switch (this.camMode) {
-            case CamMode.modal:
-                this.camWidth = document.body.offsetWidth;
-                this.camHeight = document.body.offsetHeight;
-
+            // case CamMode.modal:
+            //     this.camWidth = document.body.offsetWidth;
+            //     this.camHeight = document.body.offsetHeight;
+            //     break;
             case CamMode.embedded:
-            default:
+                default:
                 this.camWidth = this.el.parentElement.offsetWidth;
                 this.camHeight = this.el.parentElement.offsetHeight;
         }
@@ -77,7 +77,7 @@ export class CameraComponent {
                     // TODO: not working
                     // this.webcam = this.getCamComponent();
 
-                    this.onResize();
+                    // this.onResize();
                     this.camController = document.createElement('camera-controller');
                     this.camController.addEventListener('picture', (e: any) => this.picture.emit(e.detail.snapshot));
                     this.camController.addEventListener('backButton', () => { this.modal.closest('ion-modal').dismiss(); this.backButton.emit(); this.isStarted = false});
@@ -90,9 +90,11 @@ export class CameraComponent {
                         componentProps: {
                             showPreview: this.showPreview,
                             backButtonStopCam: this.backButtonStopCam,
-                            width: this.camWidth,
-                            height: this.camHeight,
+                            width: document.body.offsetWidth,
+                            height: document.body.offsetHeight,
+                            allowGallery: this.allowGallery,
                             orientation: this.orientation,
+                            isModal: true,
                         }
                     });
                     await this.modal.present();
@@ -160,21 +162,21 @@ export class CameraComponent {
         );
     }
 
-    renderModal() {
-        if (this.modal) {
-            // TODO canviar props del modal
-            console.log('renderModal', this.camWidth, this.camHeight);
-            this.modal.componentProps = {
-                showPreview: this.showPreview,
-                backButtonStopCam: this.backButtonStopCam,
-                width: this.camWidth,
-                height: this.camHeight,
-            };
-        }
-        return null;
-    }
+    // TODO: FET? canviar props del modal
+    // renderModal() {
+    //     if (this.modal) {
+    //         // console.log('renderModal', this.camWidth, this.camHeight);
+    //         this.modal.componentProps = {
+    //             showPreview: this.showPreview,
+    //             backButtonStopCam: this.backButtonStopCam,
+    //             width: this.camWidth,
+    //             height: this.camHeight,
+    //         };
+    //     }
+    //     return null;
+    // }
 
     render() {
-        return this.isRenderCam ? this.renderCam() : this.renderModal();
+        return this.isRenderCam ? this.renderCam() : null;
     }
 }

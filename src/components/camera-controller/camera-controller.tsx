@@ -1,5 +1,5 @@
 /* eslint-disable linebreak-style */
-import { Component, h, Element, Method, Event, EventEmitter, Prop, State } from '@stencil/core';
+import { Component, h, Element, Method, Event, EventEmitter, Prop, State, Listen } from '@stencil/core';
 import { Webcam } from '../../utils/webcam';
 import { arrayBufferToBase64 } from '../../utils/utils';
 import { CamOrientation } from '../../utils/webcam.types';
@@ -36,15 +36,16 @@ export class CameraController {
     /** If true, shows image preview when snap */
     @Prop() showPreview: boolean = true;
     /** Video element width */
-    @Prop() width: number;
+    @Prop({ mutable: true }) width: number;
     /** Video element height */
-    @Prop() height: number;
+    @Prop({ mutable: true }) height: number;
     // TODO: FET prop in parent
     /** Camera selected
      * - user: front camera
      * - environtment: back camera
      */
     @Prop() orientation: CamOrientation = CamOrientation.environment;
+    @Prop() isModal: boolean = false;
 
     @State() mode: CamMode = CamMode.camera;
 
@@ -53,6 +54,14 @@ export class CameraController {
     imageInput: HTMLInputElement;
     snapshot: string;
     isCamStarted = false;
+
+    @Listen('resize', { target: 'window' })
+    onResize() {
+        if (this.isModal) {
+            this.width = document.body.offsetWidth;
+            this.height = document.body.offsetHeight;
+        }
+    }
 
     componentDidRender() {
         if (this.mode === CamMode.camera && !this.isCamStarted) {
@@ -163,7 +172,7 @@ export class CameraController {
     // TODO: FET renderització botons camara 
     // TODO: renderització del preview
     renderCamera() {
-        console.log('renderCamera', this.width, this.height);
+        // console.log('renderCamera', this.width, this.height);
         return [
             <div class="relative">
                 <video

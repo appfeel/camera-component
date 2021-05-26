@@ -53,6 +53,7 @@ export namespace Components {
           * Video element height
          */
         "height": number;
+        "isModal": boolean;
         /**
           * Camera selected - user: front camera - environtment: back camera
          */
@@ -141,6 +142,7 @@ declare namespace LocalJSX {
           * Video element height
          */
         "height"?: number;
+        "isModal"?: boolean;
         /**
           * Event emitted when back button is pushed
          */
