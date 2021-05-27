@@ -154,7 +154,7 @@ export class CameraComponent {
                 backButtonStopCam={this.backButtonStopCam}
                 width={this.camWidth}
                 height={this.camHeight}
-                onBackButton={() => { this.isRenderCam = false; }}
+                onBackButton={() => { this.isRenderCam = false; this.isStarted = false; }}
                 allowGallery={this.allowGallery}
                 orientation={this.orientation}
             />
