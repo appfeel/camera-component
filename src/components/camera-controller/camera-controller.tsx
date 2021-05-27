@@ -88,13 +88,6 @@ export class CameraController {
         this.isCamStarted = false;
     }
 
-    handleBackButton() {
-        if (this.backButtonStopCam) {
-            this.stopWebcam();
-        }
-        this.backButton.emit();
-    }
-
     /**
      * Switch between front and back cam
      */
@@ -119,20 +112,6 @@ export class CameraController {
         }
     }
 
-    handleAcceptPicture() {
-        const snapshot = this.snapshot;
-        this.picture.emit({ snapshot });
-    }
-
-    handleRejectPicture() {
-        this.mode = CamMode.camera;
-    }
-
-    handleOpenGallery() {
-        this.imageInput.value = '';
-        this.imageInput.click();
-    }
-
     loadImage() {
         if (this.imageInput.files && this.imageInput.files[0]) {
             const reader = new FileReader();
@@ -145,6 +124,7 @@ export class CameraController {
                     this.snapshot = e.target.result.toString();
                 }
                 if (this.showPreview) {
+                    this.stopWebcam();
                     this.mode = CamMode.preview;
                 } else {
                     this.picture.emit({ snapshot: this.snapshot });
@@ -152,6 +132,27 @@ export class CameraController {
             };
             reader.readAsDataURL(this.imageInput.files[0]);
         }
+    }
+
+    handleAcceptPicture() {
+        const snapshot = this.snapshot;
+        this.picture.emit({ snapshot });
+    }
+
+    handleRejectPicture() {
+        this.mode = CamMode.camera;
+    }
+
+    handleBackButton() {
+        if (this.backButtonStopCam) {
+            this.stopWebcam();
+        }
+        this.backButton.emit();
+    }
+
+    handleOpenGallery() {
+        this.imageInput.value = '';
+        this.imageInput.click();
     }
 
     renderImage() {
