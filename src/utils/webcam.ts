@@ -144,12 +144,10 @@ export class Webcam {
         this.stop();
         const stream = await navigator.mediaDevices.getUserMedia(this.getMediaConstraints()); // get permisson from user
         this._streamList.push(stream);
-        const webcams = await this.info(); // get all video input devices info
+        await this.info(); // get all video input devices info
         this.selectCamera(); // select camera based on facingMode
-        console.log(webcams);
         if (startStream) {
             this._facingMode = await this.stream() as CamOrientation;
-            console.log(this._facingMode);
             return this._facingMode;
         } else {
             return this._selectedDeviceId;
@@ -168,7 +166,6 @@ export class Webcam {
         this.selectCamera(); // select camera based on facingMode
         if (startStream) {
             this._facingMode = await this.stream() as CamOrientation;
-            console.log(this._facingMode);
             return this._facingMode;
         } else {
             return this._selectedDeviceId;
