@@ -214,6 +214,7 @@ export class Webcam {
             if (this._snapSoundElement != null) {
                 this._snapSoundElement.play();
             }
+            // TODO: dimensions de la imatge
             this._canvasElement.height = this._webcamElement.scrollHeight;
             this._canvasElement.width = this._webcamElement.scrollWidth;
             const context = this._canvasElement.getContext('2d');
