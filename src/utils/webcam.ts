@@ -5,13 +5,13 @@ import { CamOrientation } from "./webcam.types";
  */
 export class Webcam {
 
-    private _webcamElement: any;
+    private _webcamElement: HTMLVideoElement;
     private _facingMode: CamOrientation;
-    private _webcamList: any[];
-    private _streamList: any[];
+    private _webcamList: MediaDeviceInfo[];
+    private _streamList: MediaStream[];
     private _selectedDeviceId: string;
     private _canvasElement: HTMLCanvasElement;
-    private _snapSoundElement: any;
+    private _snapSoundElement: HTMLAudioElement;
 
     static instance: Webcam;
 
@@ -83,7 +83,7 @@ export class Webcam {
      * Get all video input devices info
      * @param mediaDevices 
      */
-    getVideoInputs(mediaDevices) {
+    getVideoInputs(mediaDevices: MediaDeviceInfo[]) {
         this._webcamList = [];
         mediaDevices.forEach((mediaDevice) => {
             if (mediaDevice.kind === 'videoinput') {
