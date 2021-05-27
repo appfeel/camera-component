@@ -34,7 +34,6 @@ export class CameraComponent {
     @Prop() orientation: CamOrientation = CamOrientation.environment;
 
     @State() isRenderCam = false;
-    @State() urlB64: any;
     @State() camWidth: number;
     @State() camHeight: number;
 
