@@ -110,6 +110,7 @@ export class Webcam {
         } else {
             videoConstraints.deviceId = { exact: this._selectedDeviceId };
         }
+        videoConstraints.aspectRatio = this._webcamElement.width / this._webcamElement.height;
         constraints.video = videoConstraints;
         return constraints;
     }
