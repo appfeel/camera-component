@@ -46,6 +46,10 @@ export namespace Components {
          */
         "backButtonStopCam": boolean;
         /**
+          * Camera mode
+         */
+        "camMode": CamMode;
+        /**
           * Switch between front and back cam
          */
         "flipCam": () => Promise<void>;
@@ -53,7 +57,6 @@ export namespace Components {
           * Video element height
          */
         "height": number;
-        "isModal": boolean;
         /**
           * Camera selected - user: front camera - environtment: back camera
          */
@@ -139,10 +142,13 @@ declare namespace LocalJSX {
          */
         "backButtonStopCam"?: boolean;
         /**
+          * Camera mode
+         */
+        "camMode"?: CamMode;
+        /**
           * Video element height
          */
         "height"?: number;
-        "isModal"?: boolean;
         /**
           * Event emitted when back button is pushed
          */

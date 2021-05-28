@@ -1,10 +1,10 @@
 /* eslint-disable linebreak-style */
 import { Component, h, Element, Method, Event, EventEmitter, Prop, State, Listen } from '@stencil/core';
 import { Webcam } from '../../utils/webcam';
-import { arrayBufferToBase64 } from '../../utils/utils';
 import { CamOrientation } from '../../utils/webcam.types';
+import { CamMode } from '../camera-component/types';
 
-enum CamMode {
+enum ViewMode {
     /** Camera is active */
     camera,
     /** Preview of the picture when it has already been taken */
@@ -45,9 +45,10 @@ export class CameraController {
      * - environtment: back camera
      */
     @Prop() orientation: CamOrientation = CamOrientation.environment;
-    @Prop() isModal: boolean = false;
+    /** Camera mode */
+    @Prop() camMode: CamMode;
 
-    @State() mode: CamMode = CamMode.camera;
+    @State() mode: ViewMode = ViewMode.camera;
 
     webcam: Webcam;
     videoElm: HTMLVideoElement;
@@ -57,14 +58,16 @@ export class CameraController {
 
     @Listen('resize', { target: 'window' })
     onResize() {
-        if (this.isModal) {
-            this.width = document.body.offsetWidth;
-            this.height = document.body.offsetHeight;
+        switch (this.camMode) {
+            case CamMode.modal:
+                this.width = document.body.offsetWidth;
+                this.height = document.body.offsetHeight;
+                break;
         }
     }
 
     componentDidRender() {
-        if (this.mode === CamMode.camera && !this.isCamStarted) {
+        if (this.mode === ViewMode.camera && !this.isCamStarted) {
             this.startWebcam();
         }
     }
@@ -106,7 +109,7 @@ export class CameraController {
         const snapshot = this.snapshot;
         if (this.showPreview) {
             this.stopWebcam();
-            this.mode = CamMode.preview;
+            this.mode = ViewMode.preview;
         } else {
             this.picture.emit({ snapshot });
         }
@@ -117,15 +120,15 @@ export class CameraController {
             const reader = new FileReader();
             reader.onloadend = (e) => {
                 if (e.target.result instanceof ArrayBuffer) {
-                    //TODO: comprovar array buffer
+                    //TODO: FET? comprovar array buffer
                     console.log('Snapshot is arraybuffer', e.target.result);
-                    this.snapshot = `image/base64;data:${arrayBufferToBase64(e.target.result)}`;
+                    this.snapshot = e.target.result[0].toString();
                 } else {
                     this.snapshot = e.target.result.toString();
                 }
                 if (this.showPreview) {
                     this.stopWebcam();
-                    this.mode = CamMode.preview;
+                    this.mode = ViewMode.preview;
                 } else {
                     this.picture.emit({ snapshot: this.snapshot });
                 }
@@ -140,7 +143,7 @@ export class CameraController {
     }
 
     handleRejectPicture() {
-        this.mode = CamMode.camera;
+        this.mode = ViewMode.camera;
     }
 
     handleBackButton() {
@@ -226,6 +229,6 @@ export class CameraController {
     }
 
     render() {
-        return this.mode === CamMode.camera ? this.renderCamera() : this.renderPreview();
+        return this.mode === ViewMode.camera ? this.renderCamera() : this.renderPreview();
     }
 }
