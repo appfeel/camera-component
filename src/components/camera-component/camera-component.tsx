@@ -93,7 +93,7 @@ export class CameraComponent {
                             height: document.body.offsetHeight,
                             allowGallery: this.allowGallery,
                             orientation: this.orientation,
-                            isModal: true,
+                            camMode: this.camMode,
                         }
                     });
                     await this.modal.present();
@@ -106,6 +106,7 @@ export class CameraComponent {
             }
         }
         // TODO: documentar: quan es crida stop abans que acabi start
+        // If stop is called before start process ends
         if (!this.isStarted) {
             await this.stop();
         }
