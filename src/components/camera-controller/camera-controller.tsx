@@ -1,5 +1,5 @@
 /* eslint-disable linebreak-style */
-import { Component, h, Element, Method, Event, EventEmitter, Prop, State, Listen } from '@stencil/core';
+import { Component, h, Element, Method, Event, EventEmitter, Prop, State } from '@stencil/core';
 import { Webcam } from '../../utils/webcam';
 import { CamOrientation } from '../../utils/webcam.types';
 import { CamMode } from '../camera-component/types';
@@ -56,16 +56,6 @@ export class CameraController {
     snapshot: string;
     isCamStarted = false;
 
-    @Listen('resize', { target: 'window' })
-    onResize() {
-        switch (this.camMode) {
-            case CamMode.modal:
-                this.width = document.body.offsetWidth;
-                this.height = document.body.offsetHeight;
-                break;
-        }
-    }
-
     componentDidRender() {
         if (this.mode === ViewMode.camera && !this.isCamStarted) {
             this.startWebcam();
@@ -113,6 +103,12 @@ export class CameraController {
         } else {
             this.picture.emit({ snapshot });
         }
+    }
+
+    @Method()
+    async resize(width: number, height: number) {
+        this.width = width;
+        this.height = height;
     }
 
     loadImage() {
@@ -214,9 +210,7 @@ export class CameraController {
 
     renderPreview() {
         return [
-            <div>
-                {this.renderImage()}
-            </div>,
+            this.renderImage(),
             <ion-footer class='footer'>
                 <ion-button fill="clear" onClick={() => this.handleRejectPicture()}>
                     <ion-icon slot="icon-only" name="close-outline"></ion-icon>

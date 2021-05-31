@@ -34,6 +34,9 @@ export namespace Components {
           * @param camMode Defaults to embedded
          */
         "start": (camMode?: CamMode) => Promise<void>;
+        /**
+          * Method to stop the camera
+         */
         "stop": () => Promise<void>;
     }
     interface CameraController {
@@ -61,6 +64,7 @@ export namespace Components {
           * Camera selected - user: front camera - environtment: back camera
          */
         "orientation": CamOrientation;
+        "resize": (width: number, height: number) => Promise<void>;
         /**
           * If true, shows image preview when snap
          */

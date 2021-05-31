@@ -1,5 +1,5 @@
 import { modalController } from '@ionic/core';
-import { Component, h, Method, State, Event, EventEmitter, Prop, Listen, Element } from '@stencil/core';
+import { Component, h, Method, State, Event, EventEmitter, Prop, Element, Listen } from '@stencil/core';
 import { CamOrientation } from '../../utils/webcam.types';
 import { CamMode } from './types';
 
@@ -34,8 +34,6 @@ export class CameraComponent {
     @Prop() orientation: CamOrientation = CamOrientation.environment;
 
     @State() isRenderCam = false;
-    @State() camWidth: number;
-    @State() camHeight: number;
 
     camController: HTMLCameraControllerElement;
     imageInput: HTMLInputElement;
@@ -50,15 +48,15 @@ export class CameraComponent {
 
     @Listen('resize', { target: 'window' })
     onResize() {
-        switch (this.camMode) {
-            // case CamMode.modal:
-            //     this.camWidth = document.body.offsetWidth;
-            //     this.camHeight = document.body.offsetHeight;
-            //     break;
-            case CamMode.embedded:
+        if (this.isStarted) {
+            switch (this.camMode) {
+                case CamMode.modal:
+                    this.camController.resize(window.innerWidth, window.innerHeight);
+                    break;
+                case CamMode.embedded:
                 default:
-                this.camWidth = this.el.parentElement.offsetWidth;
-                this.camHeight = this.el.parentElement.offsetHeight;
+                    this.camController.resize(this.el.parentElement.offsetWidth, this.el.parentElement.offsetHeight);
+            }
         }
     }
 
@@ -75,11 +73,9 @@ export class CameraComponent {
                 case CamMode.modal:
                     // TODO: not working
                     // this.webcam = this.getCamComponent();
-
-                    // this.onResize();
                     this.camController = document.createElement('camera-controller');
                     this.camController.addEventListener('picture', (e: any) => this.picture.emit(e.detail.snapshot));
-                    this.camController.addEventListener('backButton', () => { this.modal.closest('ion-modal').dismiss(); this.backButton.emit(); this.isStarted = false});
+                    this.camController.addEventListener('backButton', () => { this.modal.closest('ion-modal').dismiss(); this.backButton.emit(); this.isStarted = false });
                     this.camController.addEventListener('webcamStop', () => this.webcamStop.emit());
 
                     this.modal = await modalController.create({
@@ -89,14 +85,16 @@ export class CameraComponent {
                         componentProps: {
                             showPreview: this.showPreview,
                             backButtonStopCam: this.backButtonStopCam,
-                            width: document.body.offsetWidth,
-                            height: document.body.offsetHeight,
+                            width: window.innerWidth,
+                            height: window.innerHeight,
                             allowGallery: this.allowGallery,
                             orientation: this.orientation,
                             camMode: this.camMode,
                         }
                     });
+                    this.modal.style.position = 'fixed';
                     await this.modal.present();
+                    this.onResize();
                     break;
 
                 case CamMode.embedded:
@@ -112,6 +110,9 @@ export class CameraComponent {
         }
     }
 
+    /**
+     * Method to stop the camera
+     */
     @Method()
     async stop() {
         if (this.isStarted) {
@@ -125,7 +126,7 @@ export class CameraComponent {
                     break;
 
                 case CamMode.embedded:
-                default: 
+                default:
                     this.isRenderCam = false;
                     break;
             }
@@ -149,15 +150,16 @@ export class CameraComponent {
             <camera-controller
                 ref={el => {
                     this.camController = el;
-                    this.onResize();
+                    // this.onResize();
                 }}
                 showPreview={this.showPreview}
                 backButtonStopCam={this.backButtonStopCam}
-                width={this.camWidth}
-                height={this.camHeight}
+                width={this.el.parentElement.offsetWidth}
+                height={this.el.parentElement.offsetHeight}
                 onBackButton={() => { this.isRenderCam = false; this.isStarted = false; }}
                 allowGallery={this.allowGallery}
                 orientation={this.orientation}
+                camMode={this.camMode}
             />
         );
     }
