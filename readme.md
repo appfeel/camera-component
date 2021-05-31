@@ -46,21 +46,17 @@ See [documentation on Github](src/components/camera-controller/readme.md) or [co
 
 ```html
     <camera-component id="camComponent" show-preview="true"></camera-component>
-    <button onclick="openCamComponent">Open the camera</button>
+    <button onclick="openCamComponent()">Open the camera</button>
     <script>
-        const camComponent = document.getElementById('cam');
+        const camComponent = document.getElementById('camComponent');
         camComponent.addEventListener('picture', (e) => console.log('Picture in base 64:', e.detail.snapshot));
         camComponent.addEventListener('backButton', () => console.log('backButton'));
         camComponent.addEventListener('webcamStop', () => console.log('webcamStop'));
-        camComponent.open();
+
+        function openCamComponent() {
+            camComponent.start(0);
+        }
     </script>
 ```
 
 See [documentation on Github](src/components/camera-component/readme.md) or [complete example](examples/camera-component.html)
-
-
-### Camera input
-
-```html
-
-```
