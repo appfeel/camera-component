@@ -110,7 +110,6 @@ export class Webcam {
         } else {
             videoConstraints.deviceId = { exact: this._selectedDeviceId };
         }
-        videoConstraints.aspectRatio = this._webcamElement.width / this._webcamElement.height;
         constraints.video = videoConstraints;
         return constraints;
     }
@@ -215,9 +214,9 @@ export class Webcam {
             if (this._snapSoundElement != null) {
                 this._snapSoundElement.play();
             }
-            // TODO: dimensions de la imatge
-            this._canvasElement.height = this._webcamElement.scrollHeight;
-            this._canvasElement.width = this._webcamElement.scrollWidth;
+            // TODO: FET dimensions de la imatge
+            this._canvasElement.height = this._webcamElement.videoHeight;
+            this._canvasElement.width = this._webcamElement.videoWidth;
             const context = this._canvasElement.getContext('2d');
             if (this._facingMode == CamOrientation.user) {
                 context.translate(this._canvasElement.width, 0);
