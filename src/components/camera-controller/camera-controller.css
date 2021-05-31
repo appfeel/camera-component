@@ -34,6 +34,8 @@ camera-controller video {
 
 camera-controller .relative {
     position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 camera-controller .absolute {
@@ -59,7 +61,10 @@ camera-controller .center {
 }
 
 camera-controller .picture {
+    object-fit: contain;
     width: 100%;
+    height: 100%;
+    background-color: black;
 }
 
 camera-controller .footer {
