@@ -45,7 +45,6 @@ export class Webcam {
         instance._webcamElement = webcamElement;
         instance._webcamElement.width = instance._webcamElement.width || 640;
         instance._webcamElement.height = instance._webcamElement.height || instance._webcamElement.width * (3 / 4);
-        // TODO: FET si no és ni user ni environment ==> environment
         if (facingMode !== CamOrientation.environment && facingMode !== CamOrientation.user) {
             facingMode = CamOrientation.environment;
         }
@@ -214,7 +213,6 @@ export class Webcam {
             if (this._snapSoundElement != null) {
                 this._snapSoundElement.play();
             }
-            // TODO: FET dimensions de la imatge
             this._canvasElement.height = this._webcamElement.videoHeight;
             this._canvasElement.width = this._webcamElement.videoWidth;
             const context = this._canvasElement.getContext('2d');
