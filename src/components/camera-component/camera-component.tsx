@@ -3,6 +3,9 @@ import { Component, h, Method, State, Event, EventEmitter, Prop, Element, Listen
 import { CamOrientation } from '../../utils/webcam.types';
 import { CamMode } from './types';
 
+/**
+ * Camera component, this is the main component.
+ */
 @Component({
     tag: 'camera-component',
     styleUrl: 'camera-component.css',
@@ -25,14 +28,13 @@ export class CameraComponent {
     @Prop() allowGallery: boolean = true;
     /** If true, stops cam when back button is pushed */
     @Prop() backButtonStopCam: boolean = true;
-    /** Camera mode */
-    @Prop({ mutable: true }) camMode?: CamMode;
     /** Camera selected
      * - user: front camera
      * - environtment: back camera
      */
     @Prop() orientation: CamOrientation = CamOrientation.environment;
-
+    
+    @State() camMode?: CamMode;
     @State() isRenderCam = false;
 
     camController: HTMLCameraControllerElement;
@@ -63,6 +65,7 @@ export class CameraComponent {
     /**
      * Method to open the camera
      * @param camMode Defaults to embedded
+     * @returns void
      */
     @Method()
     async start(camMode?: CamMode) {
@@ -103,7 +106,6 @@ export class CameraComponent {
                     break;
             }
         }
-        // TODO: documentar: quan es crida stop abans que acabi start
         // If stop is called before start process ends
         if (!this.isStarted) {
             await this.stop();
@@ -112,6 +114,7 @@ export class CameraComponent {
 
     /**
      * Method to stop the camera
+     * @returns void
      */
     @Method()
     async stop() {
@@ -150,7 +153,7 @@ export class CameraComponent {
             <camera-controller
                 ref={el => {
                     this.camController = el;
-                    // this.onResize();
+                    this.onResize();
                 }}
                 showPreview={this.showPreview}
                 backButtonStopCam={this.backButtonStopCam}
@@ -163,20 +166,6 @@ export class CameraComponent {
             />
         );
     }
-
-    // TODO: FET? canviar props del modal
-    // renderModal() {
-    //     if (this.modal) {
-    //         // console.log('renderModal', this.camWidth, this.camHeight);
-    //         this.modal.componentProps = {
-    //             showPreview: this.showPreview,
-    //             backButtonStopCam: this.backButtonStopCam,
-    //             width: this.camWidth,
-    //             height: this.camHeight,
-    //         };
-    //     }
-    //     return null;
-    // }
 
     render() {
         return this.isRenderCam ? this.renderCam() : null;
