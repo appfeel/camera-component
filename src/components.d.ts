@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { CamMode } from "./components/camera-component/types";
 import { CamOrientation } from "./utils/webcam.types";
+import { CamMode } from "./components/camera-component/types";
 export namespace Components {
     interface CameraComponent {
         /**
@@ -18,10 +18,6 @@ export namespace Components {
          */
         "backButtonStopCam": boolean;
         /**
-          * Camera mode
-         */
-        "camMode"?: CamMode;
-        /**
           * Camera selected - user: front camera - environtment: back camera
          */
         "orientation": CamOrientation;
@@ -32,10 +28,12 @@ export namespace Components {
         /**
           * Method to open the camera
           * @param camMode Defaults to embedded
+          * @returns void
          */
         "start": (camMode?: CamMode) => Promise<void>;
         /**
           * Method to stop the camera
+          * @returns void
          */
         "stop": () => Promise<void>;
     }
@@ -64,6 +62,11 @@ export namespace Components {
           * Camera selected - user: front camera - environtment: back camera
          */
         "orientation": CamOrientation;
+        /**
+          * Change the video element size
+          * @param width
+          * @param height
+         */
         "resize": (width: number, height: number) => Promise<void>;
         /**
           * If true, shows image preview when snap
@@ -111,10 +114,6 @@ declare namespace LocalJSX {
           * If true, stops cam when back button is pushed
          */
         "backButtonStopCam"?: boolean;
-        /**
-          * Camera mode
-         */
-        "camMode"?: CamMode;
         /**
           * Event emitted when back button is pushed
          */
