@@ -36,6 +36,7 @@ camera-controller .lateralIcon {
 camera-controller video {
     background-color: black;
     width: 100%;
+    height: 100%;
 }
 
 camera-controller .relative {
