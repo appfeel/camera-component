@@ -52,6 +52,7 @@ export namespace Components {
         "camMode": CamMode;
         /**
           * Switch between front and back cam
+          * @returns void
          */
         "flipCam": () => Promise<void>;
         /**
@@ -66,6 +67,7 @@ export namespace Components {
           * Change the video element size
           * @param width
           * @param height
+          * @returns void
          */
         "resize": (width: number, height: number) => Promise<void>;
         /**
@@ -74,10 +76,12 @@ export namespace Components {
         "showPreview": boolean;
         /**
           * Stop the webcam Emits webcamStop event
+          * @returns void
          */
         "stopWebcam": () => Promise<void>;
         /**
           * Captures the picture Emits picture event
+          * @returns void
          */
         "takePicture": () => Promise<void>;
         /**

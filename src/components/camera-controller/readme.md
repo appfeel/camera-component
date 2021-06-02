@@ -7,13 +7,15 @@
 
 ## Properties
 
-| Property            | Attribute              | Description                                   | Type      | Default     |
-| ------------------- | ---------------------- | --------------------------------------------- | --------- | ----------- |
-| `allowGallery`      | `allow-gallery`        | If true, allows taking picture from gallery   | `boolean` | `true`      |
-| `backButtonStopCam` | `back-button-stop-cam` | If true, stops cam when back button is pushed | `boolean` | `true`      |
-| `height`            | `height`               | Video element height                          | `number`  | `undefined` |
-| `showPreview`       | `show-preview`         | If true, shows image preview when snap        | `boolean` | `true`      |
-| `width`             | `width`                | Video element width                           | `number`  | `undefined` |
+| Property            | Attribute              | Description                                                      | Type                                                | Default                      |
+| ------------------- | ---------------------- | ---------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
+| `allowGallery`      | `allow-gallery`        | If true, allows taking picture from gallery                      | `boolean`                                           | `true`                       |
+| `backButtonStopCam` | `back-button-stop-cam` | If true, stops cam when back button is pushed                    | `boolean`                                           | `true`                       |
+| `camMode`           | `cam-mode`             | Camera mode                                                      | `CamMode.embedded \| CamMode.modal`                 | `undefined`                  |
+| `height`            | `height`               | Video element height                                             | `number`                                            | `undefined`                  |
+| `orientation`       | `orientation`          | Camera selected - user: front camera - environtment: back camera | `CamOrientation.environment \| CamOrientation.user` | `CamOrientation.environment` |
+| `showPreview`       | `show-preview`         | If true, shows image preview when snap                           | `boolean`                                           | `true`                       |
+| `width`             | `width`                | Video element width                                              | `number`                                            | `undefined`                  |
 
 
 ## Events
@@ -30,6 +32,16 @@
 ### `flipCam() => Promise<void>`
 
 Switch between front and back cam
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `resize(width: number, height: number) => Promise<void>`
+
+Change the video element size
 
 #### Returns
 

@@ -15,28 +15,88 @@ Include the following script on the html page:
 
 Install using npm
 ```sh
-npm install camera-component -S
+npm install camera-component --save
 ```
 
 or yarn
 ```sh
-yarn install camera-component
+yarn add camera-component
 ```
 
 ## React
-<!-- TODO -->
 
 ```jsx
+import { camera-component } from 'camera-component';
+
+const CamComponent = () => {
+    return <camera-component />
+}
+
+export default CamComponent;
 ```
 
 
 ## Angular
-<!-- TODO -->
 
+```ts
+//app.module.ts
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { camera-component } from 'camera-component';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    camera-component
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+```ts
+// app.component.ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+
+})
+export class AppComponent {
+  constructor(){
+    
+  }
+}
+```
+
+```html
+// app.component.html
+<camera-component />
+```
 
 ## Stencil
-<!-- TODO -->
+
 ```tsx
+import { Component } from '@stencil/core';
+import { camera-component } from 'camera-component';
+
+@Component({
+  tag: 'camera',
+  styleUrl: 'camera.scss'
+})
+export class Camera {
+
+  render() {
+    return (
+      <camera-component />
+    );
+  }
+}
 ```
 
 
@@ -64,8 +124,9 @@ This is the low level camera controller.
 
 ```html
 <camera-controller id="cam"></camera-controller>
-<button onclick="cam.flip()">Flip</button>
-<!-- <button onclick="openCam(1)">Take picture</button> TODO -->
+<button onclick="cam.flipCam()">Flip</button>
+<button onclick="cam.takePicture()">Take picture</button>
+<button onclick="cam.stopWebcam()">Stop cam</button>
 <script>
     const cam = document.getElementById('cam');
     cam.addEventListener('picture', (e) => console.log('Picture in base 64:', e.detail.snapshot));
@@ -80,4 +141,151 @@ See [documentation on Github](src/components/camera-controller/readme.md) or [co
 
 <!-- src/components/camera-component/readme.md -->
 
+# API camera-component
+
+
+
+<!-- Auto Generated Below -->
+
+
+## Properties
+
+| Property            | Attribute              | Description                                                      | Type                                                | Default                      |
+| ------------------- | ---------------------- | ---------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
+| `allowGallery`      | `allow-gallery`        | If true, allows taking picture from gallery                      | `boolean`                                           | `true`                       |
+| `backButtonStopCam` | `back-button-stop-cam` | If true, stops cam when back button is pushed                    | `boolean`                                           | `true`                       |
+| `orientation`       | `orientation`          | Camera selected - user: front camera - environtment: back camera | `CamOrientation.environment \| CamOrientation.user` | `CamOrientation.environment` |
+| `showPreview`       | `show-preview`         | If true, shows image preview when snap                           | `boolean`                                           | `true`                       |
+
+
+## Events
+
+| Event        | Description                              | Type                |
+| ------------ | ---------------------------------------- | ------------------- |
+| `backButton` | Event emitted when back button is pushed | `CustomEvent<void>` |
+| `picture`    | Event emitted when snap                  | `CustomEvent<any>`  |
+| `webcamStop` | Event emitted when cam stop              | `CustomEvent<any>`  |
+
+
+## Methods
+
+### `start(camMode?: CamMode) => Promise<void>`
+
+Method to open the camera
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `stop() => Promise<void>`
+
+Method to stop the camera
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
+## Dependencies
+
+### Depends on
+
+- [camera-controller](../camera-controller)
+
+### Graph
+```mermaid
+graph TD;
+  camera-component --> camera-controller
+  camera-controller --> ion-fab-button
+  camera-controller --> ion-icon
+  camera-controller --> ion-footer
+  camera-controller --> ion-button
+  ion-fab-button --> ion-icon
+  ion-fab-button --> ion-ripple-effect
+  ion-button --> ion-ripple-effect
+  style camera-component fill:#f9f,stroke:#333,stroke-width:4px
+```
+
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*
+
+
 <!-- src/components/camera-controller/readme.md -->
+
+# API camera-component
+
+
+
+<!-- Auto Generated Below -->
+
+
+## Properties
+
+| Property            | Attribute              | Description                                                      | Type                                                | Default                      |
+| ------------------- | ---------------------- | ---------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
+| `allowGallery`      | `allow-gallery`        | If true, allows taking picture from gallery                      | `boolean`                                           | `true`                       |
+| `backButtonStopCam` | `back-button-stop-cam` | If true, stops cam when back button is pushed                    | `boolean`                                           | `true`                       |
+| `orientation`       | `orientation`          | Camera selected - user: front camera - environtment: back camera | `CamOrientation.environment \| CamOrientation.user` | `CamOrientation.environment` |
+| `showPreview`       | `show-preview`         | If true, shows image preview when snap                           | `boolean`                                           | `true`                       |
+
+
+## Events
+
+| Event        | Description                              | Type                |
+| ------------ | ---------------------------------------- | ------------------- |
+| `backButton` | Event emitted when back button is pushed | `CustomEvent<void>` |
+| `picture`    | Event emitted when snap                  | `CustomEvent<any>`  |
+| `webcamStop` | Event emitted when cam stop              | `CustomEvent<any>`  |
+
+
+## Methods
+
+### `start(camMode?: CamMode) => Promise<void>`
+
+Method to open the camera
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `stop() => Promise<void>`
+
+Method to stop the camera
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
+## Dependencies
+
+### Depends on
+
+- [camera-controller](../camera-controller)
+
+### Graph
+```mermaid
+graph TD;
+  camera-component --> camera-controller
+  camera-controller --> ion-fab-button
+  camera-controller --> ion-icon
+  camera-controller --> ion-footer
+  camera-controller --> ion-button
+  ion-fab-button --> ion-icon
+  ion-fab-button --> ion-ripple-effect
+  ion-button --> ion-ripple-effect
+  style camera-component fill:#f9f,stroke:#333,stroke-width:4px
+```
+
+----------------------------------------------
+
+*Built with [StencilJS](https://stenciljs.com/)*

@@ -72,6 +72,7 @@ export class CameraController {
     /**
      * Stop the webcam
      * Emits webcamStop event
+     * @returns void
      */
     @Method()
     async stopWebcam() {
@@ -82,6 +83,7 @@ export class CameraController {
 
     /**
      * Switch between front and back cam
+     * @returns void
      */
     @Method()
     async flipCam() {
@@ -91,6 +93,7 @@ export class CameraController {
     /**
      * Captures the picture
      * Emits picture event
+     * @returns void
      */
     @Method()
     async takePicture() {
@@ -106,8 +109,9 @@ export class CameraController {
 
     /**
      * Change the video element size
-     * @param width 
-     * @param height 
+     * @param width
+     * @param height
+     * @returns void
      */
     @Method()
     async resize(width: number, height: number) {
