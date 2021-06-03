@@ -31,12 +31,13 @@
     "loader/"
   ],
   "scripts": {
-    "build": "stencil build --docs",
+    "build": "stencil build --docs && npm run readme",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate",
-    "release": "release-it"
+    "release": "release-it",
+    "readme": "sh scripts/createReadme.sh"
   },
   "dependencies": {
     "@ionic/core": "^5.6.7",

@@ -60,7 +60,7 @@ export namespace Components {
          */
         "height": number;
         /**
-          * Camera selected - user: front camera - environtment: back camera
+          * Selected camera - user: front camera - environtment: back camera
          */
         "orientation": CamOrientation;
         /**
@@ -169,7 +169,7 @@ declare namespace LocalJSX {
          */
         "onWebcamStop"?: (event: CustomEvent<any>) => void;
         /**
-          * Camera selected - user: front camera - environtment: back camera
+          * Selected camera - user: front camera - environtment: back camera
          */
         "orientation"?: CamOrientation;
         /**
