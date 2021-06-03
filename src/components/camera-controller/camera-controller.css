@@ -7,6 +7,7 @@ camera-controller .cam-button {
     --background: none;
     --background-hover: none;
     --ripple-color: transparent;
+    --color: white;
     width: 130px;
     height: 130px;
 }
