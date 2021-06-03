@@ -77,7 +77,7 @@ export class CameraComponent {
                     // TODO: not working
                     // this.webcam = this.getCamComponent();
                     this.camController = document.createElement('camera-controller');
-                    this.camController.addEventListener('picture', (e: any) => this.picture.emit(e.detail.snapshot));
+                    this.camController.addEventListener('picture', (e: CustomEvent) => this.picture.emit(e.detail.snapshot));
                     this.camController.addEventListener('backButton', () => { this.modal.closest('ion-modal').dismiss(); this.backButton.emit(); this.isStarted = false });
                     this.camController.addEventListener('webcamStop', () => this.webcamStop.emit());
 
