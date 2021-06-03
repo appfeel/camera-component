@@ -39,7 +39,7 @@ export class CameraController {
     @Prop({ mutable: true }) width: number;
     /** Video element height */
     @Prop({ mutable: true }) height: number;
-    /** Camera selected
+    /** Selected camera
      * - user: front camera
      * - environtment: back camera
      */
