@@ -25,52 +25,98 @@ yarn add camera-component
 
 ## React
 
-```jsx
-import { camera-component } from 'camera-component';
+```js
+// index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
 
-const CamComponent = () => {
+import { applyPolyfills, defineCustomElements } from 'camera-component/loader';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+registerServiceWorker();
+
+applyPolyfills().then(() => {
+  defineCustomElements(window);
+});
+```
+
+```jsx
+// App.jsx
+import React from 'react';
+import 'camera-component';
+
+const App = () => {
     return <camera-component />
 }
 
-export default CamComponent;
+export default App;
 ```
 
 
 ## Angular
 
 ```ts
-//app.module.ts
-import { NgModule } from '@angular/core';
+// app.module.ts
+import { BrowserModule } from '@angular/platform-browser';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
-import { camera-component } from 'camera-component';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
-    camera-component
+    BrowserModule,
+    FormsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}
+```
+
+```ts
+// main.ts
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+
+import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
+
+import { applyPolyfills, defineCustomElements } from 'camera-component/loader';
+
+if (environment.production) {
+  enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.log(err));
+applyPolyfills().then(() => {
+  defineCustomElements()
+})
 ```
 
 ```ts
 // app.component.ts
-import { Component } from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+
+import 'camera-component';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-
+    selector: 'app-home',
+    template: `<camera-component #cam></camera-component>`,
+    styleUrls: ['./home.component.scss'],
 })
 export class AppComponent {
-  constructor(){
-    
-  }
+
+    @ViewChild('cam') camComponent: ElementRef<HTMLCamComponentElement>;
+
+    async onAction() {
+        await this.camComponent.nativeElement.camComponentMethod();
+    }
 }
 ```
 
@@ -83,7 +129,7 @@ export class AppComponent {
 
 ```tsx
 import { Component } from '@stencil/core';
-import { camera-component } from 'camera-component';
+import 'camera-component';
 
 @Component({
   tag: 'camera',
@@ -91,7 +137,7 @@ import { camera-component } from 'camera-component';
 })
 export class Camera {
 
-  render() {
+render() {
     return (
       <camera-component />
     );
