@@ -11,6 +11,13 @@
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/camera-component/camera-component.esm.js",
+  "repository": {
+      "url": "https://github.com/appfeel/camera-component.git"
+  },
+  "author": {
+      "url": "https://appfeel.com",
+      "name": "AppFeel"
+  },
   "files": [
     "dist/",
     "loader/"
