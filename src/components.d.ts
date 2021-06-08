@@ -5,8 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { CamMode } from "./components/camera-component/types";
 import { CamOrientation } from "./utils/webcam.types";
+import { CamMode } from "./components/camera-component/types";
 export namespace Components {
     interface CameraComponent {
         /**
@@ -18,10 +18,6 @@ export namespace Components {
          */
         "backButtonStopCam": boolean;
         /**
-          * Camera mode
-         */
-        "camMode"?: CamMode;
-        /**
           * Camera selected - user: front camera - environtment: back camera
          */
         "orientation": CamOrientation;
@@ -32,8 +28,13 @@ export namespace Components {
         /**
           * Method to open the camera
           * @param camMode Defaults to embedded
+          * @returns void
          */
         "start": (camMode?: CamMode) => Promise<void>;
+        /**
+          * Method to stop the camera
+          * @returns void
+         */
         "stop": () => Promise<void>;
     }
     interface CameraController {
@@ -51,6 +52,7 @@ export namespace Components {
         "camMode": CamMode;
         /**
           * Switch between front and back cam
+          * @returns void
          */
         "flipCam": () => Promise<void>;
         /**
@@ -58,19 +60,28 @@ export namespace Components {
          */
         "height": number;
         /**
-          * Camera selected - user: front camera - environtment: back camera
+          * Selected camera - user: front camera - environtment: back camera
          */
         "orientation": CamOrientation;
+        /**
+          * Change the video element size
+          * @param width
+          * @param height
+          * @returns void
+         */
+        "resize": (width: number, height: number) => Promise<void>;
         /**
           * If true, shows image preview when snap
          */
         "showPreview": boolean;
         /**
           * Stop the webcam Emits webcamStop event
+          * @returns void
          */
         "stopWebcam": () => Promise<void>;
         /**
           * Captures the picture Emits picture event
+          * @returns void
          */
         "takePicture": () => Promise<void>;
         /**
@@ -107,10 +118,6 @@ declare namespace LocalJSX {
           * If true, stops cam when back button is pushed
          */
         "backButtonStopCam"?: boolean;
-        /**
-          * Camera mode
-         */
-        "camMode"?: CamMode;
         /**
           * Event emitted when back button is pushed
          */
@@ -162,7 +169,7 @@ declare namespace LocalJSX {
          */
         "onWebcamStop"?: (event: CustomEvent<any>) => void;
         /**
-          * Camera selected - user: front camera - environtment: back camera
+          * Selected camera - user: front camera - environtment: back camera
          */
         "orientation"?: CamOrientation;
         /**

@@ -1,4 +1,4 @@
-# camera-component
+# API camera-component
 
 
 
@@ -7,12 +7,12 @@
 
 ## Properties
 
-| Property            | Attribute              | Description                                   | Type                                | Default     |
-| ------------------- | ---------------------- | --------------------------------------------- | ----------------------------------- | ----------- |
-| `allowGallery`      | `allow-gallery`        | If true, allows taking picture from gallery   | `boolean`                           | `true`      |
-| `backButtonStopCam` | `back-button-stop-cam` | If true, stops cam when back button is pushed | `boolean`                           | `true`      |
-| `camMode`           | `cam-mode`             | Camera mode                                   | `CamMode.embedded \| CamMode.modal` | `undefined` |
-| `showPreview`       | `show-preview`         | If true, shows image preview when snap        | `boolean`                           | `true`      |
+| Property            | Attribute              | Description                                                      | Type                                                | Default                      |
+| ------------------- | ---------------------- | ---------------------------------------------------------------- | --------------------------------------------------- | ---------------------------- |
+| `allowGallery`      | `allow-gallery`        | If true, allows taking picture from gallery                      | `boolean`                                           | `true`                       |
+| `backButtonStopCam` | `back-button-stop-cam` | If true, stops cam when back button is pushed                    | `boolean`                                           | `true`                       |
+| `orientation`       | `orientation`          | Camera selected - user: front camera - environtment: back camera | `CamOrientation.environment \| CamOrientation.user` | `CamOrientation.environment` |
+| `showPreview`       | `show-preview`         | If true, shows image preview when snap                           | `boolean`                                           | `true`                       |
 
 
 ## Events
@@ -38,7 +38,7 @@ Type: `Promise<void>`
 
 ### `stop() => Promise<void>`
 
-
+Method to stop the camera
 
 #### Returns
 

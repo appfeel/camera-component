@@ -1,5 +1,5 @@
 /* eslint-disable linebreak-style */
-import { Component, h, Element, Method, Event, EventEmitter, Prop, State, Listen } from '@stencil/core';
+import { Component, h, Element, Method, Event, EventEmitter, Prop, State } from '@stencil/core';
 import { Webcam } from '../../utils/webcam';
 import { CamOrientation } from '../../utils/webcam.types';
 import { CamMode } from '../camera-component/types';
@@ -39,8 +39,7 @@ export class CameraController {
     @Prop({ mutable: true }) width: number;
     /** Video element height */
     @Prop({ mutable: true }) height: number;
-    // TODO: FET prop in parent
-    /** Camera selected
+    /** Selected camera
      * - user: front camera
      * - environtment: back camera
      */
@@ -55,16 +54,6 @@ export class CameraController {
     imageInput: HTMLInputElement;
     snapshot: string;
     isCamStarted = false;
-
-    @Listen('resize', { target: 'window' })
-    onResize() {
-        switch (this.camMode) {
-            case CamMode.modal:
-                this.width = document.body.offsetWidth;
-                this.height = document.body.offsetHeight;
-                break;
-        }
-    }
 
     componentDidRender() {
         if (this.mode === ViewMode.camera && !this.isCamStarted) {
@@ -83,6 +72,7 @@ export class CameraController {
     /**
      * Stop the webcam
      * Emits webcamStop event
+     * @returns void
      */
     @Method()
     async stopWebcam() {
@@ -93,6 +83,7 @@ export class CameraController {
 
     /**
      * Switch between front and back cam
+     * @returns void
      */
     @Method()
     async flipCam() {
@@ -102,6 +93,7 @@ export class CameraController {
     /**
      * Captures the picture
      * Emits picture event
+     * @returns void
      */
     @Method()
     async takePicture() {
@@ -115,13 +107,23 @@ export class CameraController {
         }
     }
 
+    /**
+     * Change the video element size
+     * @param width
+     * @param height
+     * @returns void
+     */
+    @Method()
+    async resize(width: number, height: number) {
+        this.width = width;
+        this.height = height;
+    }
+
     loadImage() {
         if (this.imageInput.files && this.imageInput.files[0]) {
             const reader = new FileReader();
             reader.onloadend = (e) => {
                 if (e.target.result instanceof ArrayBuffer) {
-                    //TODO: FET? comprovar array buffer
-                    console.log('Snapshot is arraybuffer', e.target.result);
                     this.snapshot = e.target.result[0].toString();
                 } else {
                     this.snapshot = e.target.result.toString();
@@ -165,18 +167,15 @@ export class CameraController {
     renderGalleryButton() {
         if (this.allowGallery) {
             return (
-                <ion-fab-button class="cam-button absolute righter" onClick={() => this.handleOpenGallery()}>
-                    <ion-icon name="image-outline"></ion-icon>
+                <ion-fab-button class="cam-button absolute right100" onClick={() => this.handleOpenGallery()}>
+                    <ion-icon class="lateral-icon" name="image-outline"></ion-icon>
                 </ion-fab-button>
             );
         }
         return null;
     }
 
-    // TODO: FET renderització botons camara 
-    // TODO: renderització del preview
     renderCamera() {
-        // console.log('renderCamera', this.width, this.height);
         return [
             <div class="relative">
                 <video
@@ -199,14 +198,14 @@ export class CameraController {
                 />
 
                 <ion-fab-button class="cam-button absolute left" onClick={() => this.handleBackButton()}>
-                    <ion-icon name="caret-back"></ion-icon>
+                    <ion-icon class="lateral-icon" name="caret-back"></ion-icon>
                 </ion-fab-button>
                 <ion-fab-button id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
                     <ion-icon class="circle" name="ellipse"></ion-icon>
                 </ion-fab-button>
                 {this.renderGalleryButton()}
-                <ion-fab-button class="cam-button absolute right" onClick={() => this.flipCam()}>
-                    <ion-icon name="camera-reverse"></ion-icon>
+                <ion-fab-button class="cam-button absolute right20" onClick={() => this.flipCam()}>
+                    <ion-icon class="lateral-icon" name="camera-reverse"></ion-icon>
                 </ion-fab-button>
             </div>
         ];
@@ -214,9 +213,7 @@ export class CameraController {
 
     renderPreview() {
         return [
-            <div>
-                {this.renderImage()}
-            </div>,
+            this.renderImage(),
             <ion-footer class='footer'>
                 <ion-button fill="clear" onClick={() => this.handleRejectPicture()}>
                     <ion-icon slot="icon-only" name="close-outline"></ion-icon>
