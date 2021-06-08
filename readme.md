@@ -1,3 +1,4 @@
+
 # JavaScript Camera Component
 
 A Javascript camera component, made with Stencil.js. This is a web component and as such, it does not depend on any framework.
@@ -12,7 +13,6 @@ Include the following scripts on the html page:
 ```html
 <script type="module" src="https://unpkg.com/camera-component/dist/camera-component/camera-component.esm.js"></script>
 <script nomodule src="https://unpkg.com/camera-component/dist/camera-component/camera-component.js"></script>
-```
 
 ## Frameworks
 
@@ -366,3 +366,13 @@ graph TD;
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*
+
+
+# Roadmap
+
+[-] Share image: Twitter, Facebook, Instagram, Email, Linkedin
+[-] Rotate image
+[-] Scale image
+[-] Button effects
+[-] Image effects (sepia, black/white, ...)
+[-] Video recorder
