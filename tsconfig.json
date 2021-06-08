@@ -14,12 +14,19 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "jsx": "react",
-    "jsxFactory": "h"
+    "jsxFactory": "h",
+    "skipLibCheck": true,
+    "allowJs": true,
+    "typeRoots": [
+        "node_modules/@types"
+    ],
+    "types": ["jest"],
   },
   "include": [
     "src"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/assets"
   ]
 }

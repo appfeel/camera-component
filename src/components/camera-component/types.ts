@@ -1,4 +1,3 @@
-
 export enum CamMode {
     /** Embedded mode, default */
     embedded,

@@ -1,5 +1,6 @@
 import { modalController } from '@ionic/core';
 import { Component, h, Method, State, Event, EventEmitter, Prop, Element, Listen } from '@stencil/core';
+
 import { CamOrientation } from '../../utils/webcam.types';
 import { CamMode } from './types';
 
@@ -12,7 +13,6 @@ import { CamMode } from './types';
     shadow: true,
 })
 export class CameraComponent {
-
     @Element() el: HTMLCameraComponentElement;
 
     /** Event emitted when snap */
@@ -23,17 +23,17 @@ export class CameraComponent {
     @Event({ bubbles: true, cancelable: true, composed: true }) backButton: EventEmitter<void>;
 
     /** If true, shows image preview when snap */
-    @Prop() showPreview: boolean = true;
+    @Prop() showPreview = true;
     /** If true, allows taking picture from gallery */
-    @Prop() allowGallery: boolean = true;
+    @Prop() allowGallery = true;
     /** If true, stops cam when back button is pushed */
-    @Prop() backButtonStopCam: boolean = true;
+    @Prop() backButtonStopCam = true;
     /** Camera selected
      * - user: front camera
      * - environtment: back camera
      */
     @Prop() orientation: CamOrientation = CamOrientation.environment;
-    
+
     @State() camMode?: CamMode;
     @State() isRenderCam = false;
 
@@ -78,7 +78,11 @@ export class CameraComponent {
                     // this.webcam = this.getCamComponent();
                     this.camController = document.createElement('camera-controller');
                     this.camController.addEventListener('picture', (e: CustomEvent) => this.picture.emit(e.detail.snapshot));
-                    this.camController.addEventListener('backButton', () => { this.modal.closest('ion-modal').dismiss(); this.backButton.emit(); this.isStarted = false });
+                    this.camController.addEventListener('backButton', () => {
+                        this.modal.closest('ion-modal').dismiss();
+                        this.backButton.emit();
+                        this.isStarted = false;
+                    });
                     this.camController.addEventListener('webcamStop', () => this.webcamStop.emit());
 
                     this.modal = await modalController.create({
@@ -93,7 +97,7 @@ export class CameraComponent {
                             allowGallery: this.allowGallery,
                             orientation: this.orientation,
                             camMode: this.camMode,
-                        }
+                        },
                     });
                     this.modal.style.position = 'fixed';
                     await this.modal.present();
@@ -151,7 +155,7 @@ export class CameraComponent {
     renderCam() {
         return (
             <camera-controller
-                ref={el => {
+                ref={(el) => {
                     this.camController = el;
                     this.onResize();
                 }}

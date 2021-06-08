@@ -1,4 +1,5 @@
 dist/
+!www/favicon.ico
 www/
 loader/
 
@@ -19,8 +20,41 @@ log.txt
 .versions/
 node_modules/
 $RECYCLE.BIN/
+tmp/
 
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
 .env
+
+resources/android
+resources/ios
+
+
+.sourcemaps
+.gradle/
+.settings/
+.project
+
+*.map
+.*.sw*
+!/build/.npmkeep
+lerna-debug.log
+local.properties
+
+Podfile.lock
+contents.xcworkspacedata
+xcuserdata/
+Build/*
+Index/
+Pods/
+
+android-template.iml
+android-template/.gradle/
+android-template/app/app.iml
+
+# Logs
+logs
+*.log
+**/logs/
+npm-debug.log*

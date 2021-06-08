@@ -1,5 +1,6 @@
-/* eslint-disable linebreak-style */
+/* eslint-disable jsx-a11y/media-has-caption, linebreak-style */
 import { Component, h, Element, Method, Event, EventEmitter, Prop, State } from '@stencil/core';
+
 import { Webcam } from '../../utils/webcam';
 import { CamOrientation } from '../../utils/webcam.types';
 import { CamMode } from '../camera-component/types';
@@ -19,7 +20,6 @@ enum ViewMode {
     styleUrl: 'camera-controller.css',
 })
 export class CameraController {
-
     @Element() el: HTMLCameraControllerElement;
 
     /** Event emitted when snap */
@@ -30,11 +30,11 @@ export class CameraController {
     @Event() backButton: EventEmitter<void>;
 
     /** If true, allows taking picture from gallery */
-    @Prop() allowGallery: boolean = true;
+    @Prop() allowGallery = true;
     /** If true, stops cam when back button is pushed */
-    @Prop() backButtonStopCam: boolean = true;
+    @Prop() backButtonStopCam = true;
     /** If true, shows image preview when snap */
-    @Prop() showPreview: boolean = true;
+    @Prop() showPreview = true;
     /** Video element width */
     @Prop({ mutable: true }) width: number;
     /** Video element height */
@@ -98,7 +98,7 @@ export class CameraController {
     @Method()
     async takePicture() {
         this.snapshot = this.webcam.snap();
-        const snapshot = this.snapshot;
+        const { snapshot } = this;
         if (this.showPreview) {
             this.stopWebcam();
             this.mode = ViewMode.preview;
@@ -140,7 +140,7 @@ export class CameraController {
     }
 
     handleAcceptPicture() {
-        const snapshot = this.snapshot;
+        const { snapshot } = this;
         this.picture.emit({ snapshot });
     }
 
@@ -161,14 +161,14 @@ export class CameraController {
     }
 
     renderImage() {
-        return <img class="picture" src={this.snapshot} alt="picture" />;
+        return <img class="picture" src={this.snapshot} alt="Render preview" />;
     }
 
     renderGalleryButton() {
         if (this.allowGallery) {
             return (
                 <ion-fab-button class="cam-button absolute right100" onClick={() => this.handleOpenGallery()}>
-                    <ion-icon class="lateral-icon" name="image-outline"></ion-icon>
+                    <ion-icon class="lateral-icon" name="image-outline" />
                 </ion-fab-button>
             );
         }
@@ -183,7 +183,7 @@ export class CameraController {
                     class="hidden"
                     autoplay
                     playsinline
-                    ref={el => this.videoElm = el}
+                    ref={el => (this.videoElm = el)}
                     width={this.width}
                     height={this.height}
                 />
@@ -193,35 +193,35 @@ export class CameraController {
                     alt="Imagen anexa"
                     class="hidden"
                     accept="image/x-png,image/gif,image/jpeg,image/jpg"
-                    ref={el => this.imageInput = el}
+                    ref={el => (this.imageInput = el)}
                     onInput={() => this.loadImage()}
                 />
 
                 <ion-fab-button class="cam-button absolute left" onClick={() => this.handleBackButton()}>
-                    <ion-icon class="lateral-icon" name="caret-back"></ion-icon>
+                    <ion-icon class="lateral-icon" name="caret-back" />
                 </ion-fab-button>
                 <ion-fab-button id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
-                    <ion-icon class="circle" name="ellipse"></ion-icon>
+                    <ion-icon class="circle" name="ellipse" />
                 </ion-fab-button>
                 {this.renderGalleryButton()}
                 <ion-fab-button class="cam-button absolute right20" onClick={() => this.flipCam()}>
-                    <ion-icon class="lateral-icon" name="camera-reverse"></ion-icon>
+                    <ion-icon class="lateral-icon" name="camera-reverse" />
                 </ion-fab-button>
-            </div>
+            </div>,
         ];
     }
 
     renderPreview() {
         return [
             this.renderImage(),
-            <ion-footer class='footer'>
+            <ion-footer class="footer">
                 <ion-button fill="clear" onClick={() => this.handleRejectPicture()}>
-                    <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+                    <ion-icon slot="icon-only" name="close-outline" />
                 </ion-button>
                 <ion-button fill="clear" onClick={() => this.handleAcceptPicture()}>
-                    <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+                    <ion-icon slot="icon-only" name="checkmark" />
                 </ion-button>
-            </ion-footer>
+            </ion-footer>,
         ];
     }
 
