@@ -2,7 +2,7 @@
 
 A Javascript camera component, made with Stencil.js. This is a web component and as such, it does not depend on any framework.
 
-It works well with Angular, React, Vue, Stencil, JQuery, any other unimaginable framework or none at all.
+Anyhow it works well with Angular, React, Vue, Stencil, JQuery, any other unimaginable framework or none at all.
 
 # Install
 ## JS without any framework
