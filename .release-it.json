@@ -6,7 +6,7 @@
         "tagName": "v${version}",
         "addUntrackedFiles": true,
         "requireCleanWorkingDir": false,
-        "pushArgs": "-u github"
+        "pushArgs": "github master"
     },
     "github": {
         "release": true
