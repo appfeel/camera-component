@@ -1,6 +1,6 @@
 {
   "name": "camera-component",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "description": "Vainilla JavaScript Camera Component",
   "keywords": [
     "webcam",
