@@ -46,7 +46,7 @@
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate",
-    "release": "release-it",
+    "release": "dotenv release-it",
     "readme": "sh scripts/createReadme.sh"
   },
   "dependencies": {
@@ -64,6 +64,7 @@
     "@types/redux-logger": "^3.0.8",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
+    "dotenv-cli": "^4.0.0",
     "eslint": "^7.23.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.1.0",

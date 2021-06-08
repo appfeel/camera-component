@@ -12,6 +12,7 @@ Include the following scripts on the html page:
 ```html
 <script type="module" src="https://unpkg.com/camera-component/dist/camera-component/camera-component.esm.js"></script>
 <script nomodule src="https://unpkg.com/camera-component/dist/camera-component/camera-component.js"></script>
+```
 
 ## Frameworks
 

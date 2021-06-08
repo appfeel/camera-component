@@ -1,9 +1,15 @@
 {
+    "hooks": {
+        "before:init": ["npm run build"]
+    },
     "git": {
         "tagName": "v${version}",
         "addUntrackedFiles": true,
         "requireCleanWorkingDir": false,
         "pushArgs": "-u github"
+    },
+    "github": {
+        "release": true
     },
     "npm": {
         "publish": true,
