@@ -114,10 +114,20 @@ export class Webcam {
     /**
      * Select camera based on facingMode
      */
-    selectCamera() {
-        const { deviceId } = this.webcamList.find(wc => (this.mFacingMode === CamOrientation.user && wc.label.toLowerCase().includes('front'))
-            || (this.mFacingMode === CamOrientation.environment && wc.label.toLowerCase().includes('back'))) || {};
-        this.mSelectedDeviceId = deviceId;
+    selectCamera(isFlip = false) {
+        // iPhone:
+        // {deviceId: "AB927975C8778829642E82A0F73C8FC6E5CE087D", kind: "videoinput", label: "Càmera del darrere", groupId: "", toJSON: function}
+        // {deviceId: "21F79D5A972EBF3041CDFF6E16A0F11F39D8B372", kind: "videoinput", label: "Càmera del davant", groupId: "", toJSON: function}
+        if (isFlip && this.mSelectedDeviceId) {
+            // iPhone workaround: already selected a deviceId and flip is requested
+            let idx = this.webcamList.findIndex(wc => wc.deviceId === this.mSelectedDeviceId) + 1;
+            idx = idx >= this.webcamList.length ? 0 : idx; // Rotate, in case more than 2 cams
+            this.mSelectedDeviceId = this.webcamList[idx].deviceId;
+        } else if (!this.mSelectedDeviceId) {
+            const { deviceId } = this.webcamList.find(wc => (this.mFacingMode === CamOrientation.user && wc.label.toLowerCase().includes('front'))
+                || (this.mFacingMode === CamOrientation.environment && wc.label.toLowerCase().includes('back'))) || this.webcamList[0];
+            this.mSelectedDeviceId = deviceId;
+        }
     }
 
     /**
@@ -126,6 +136,7 @@ export class Webcam {
     flip() {
         this.mFacingMode = (this.mFacingMode === CamOrientation.user) ? CamOrientation.environment : CamOrientation.user;
         this.mWebcamElement.style.transform = '';
+        this.selectCamera(true);
         this.restart();
     }
 
