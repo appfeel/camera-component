@@ -10,8 +10,7 @@
         "pushArgs": "-u github"
     },
     "github": {
-        "release": true,
-        "skipChecks": true
+        "release": true
     },
     "npm": {
         "publish": true,
