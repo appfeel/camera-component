@@ -3,30 +3,19 @@ camera-controller .hidden {
 }
 
 camera-controller .cam-button {
-    --box-shadow: none;
-    --background: none;
-    --background-hover: none;
-    --ripple-color: transparent;
-    --color: white;
     width: 130px;
     height: 130px;
+    filter: brightness(0) invert(1);
 }
 
 camera-controller .snap-button {
-    --background: rgba(255, 255, 255, 0.4);
+    border-radius: 100%;
+    background: rgba(255, 255, 255, 0.4);
 }
 
 camera-controller .snap-button:active {
     transform: scale(0.9);
     transition: all 100ms;
-}
-
-camera-controller .circle {
-    font-size: 130px;
-}
-
-camera-controller .lateral-icon {
-    font-size: 60px;
 }
 
 .camera-modal .modal-wrapper {
@@ -93,14 +82,6 @@ camera-controller .footer ion-icon {
     camera-controller .cam-button {
         width: 80px;
         height: 80px;
-    }
-
-    camera-controller .circle {
-        font-size: 80px;
-    }
-
-    camera-controller .lateral-icon {
-        font-size: 40px;
     }
 
     camera-controller .center {
