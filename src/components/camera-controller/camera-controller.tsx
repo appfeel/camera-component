@@ -1,4 +1,6 @@
-/* eslint-disable jsx-a11y/media-has-caption, linebreak-style */
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import { Component, h, Element, Method, Event, EventEmitter, Prop, State } from '@stencil/core';
 
 import camIcon from '../../assets/icons/camera-reverse.svg';
@@ -171,7 +173,7 @@ export class CameraController {
     renderGalleryButton() {
         if (this.allowGallery) {
             return (
-                <div class="cam-button absolute right100" onClick={() => this.handleOpenGallery()}>
+                <div role="button" class="cam-button absolute right100" onClick={() => this.handleOpenGallery()}>
                     <img class="lateral-icon" src={galleryIcon} alt="" />
                 </div>
             );
@@ -201,14 +203,14 @@ export class CameraController {
                     onInput={() => this.loadImage()}
                 />
 
-                <div class="cam-button absolute left" onClick={() => this.handleBackButton()}>
+                <div role="button" class="cam-button absolute left" onClick={() => this.handleBackButton()}>
                     <img class="lateral-icon back-icon" src={backIcon} alt="" />
                 </div>
-                <div id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
+                <div role="button" id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
                     <img class="circle" src={ellipse} alt="" />
                 </div>
                 {this.renderGalleryButton()}
-                <div class="cam-button absolute right20" onClick={() => this.flipCam()}>
+                <div role="button" class="cam-button absolute right20" onClick={() => this.flipCam()}>
                     <img class="lateral-icon flip-icon" src={camIcon} alt="" />
                 </div>
             </div>,
