@@ -141,6 +141,17 @@ export class Webcam {
     }
 
     /**
+     * Invert the webcam video vertically
+     */
+    transform() {
+        if (this.mWebcamElement.style.transform === '') {
+            this.mWebcamElement.style.transform = 'scale(-1,1)';
+        } else {
+            this.mWebcamElement.style.transform = '';
+        }
+    }
+
+    /**
      * 1. Get permission from user
      * 2. Get all video input devices info
      * 3. Select camera based on facingMode
@@ -163,13 +174,11 @@ export class Webcam {
     /**
      * Restart the Webcam
      * 1. Stop the webcam
-     * 2. Select camera based on facingMode
-     * 3. Start stream
+     * 2. Start stream
      * @param startStream
      */
     async restart(startStream = true) {
         this.stop();
-        this.selectCamera(); // select camera based on facingMode
         if (startStream) {
             this.mFacingMode = await this.stream() as CamOrientation;
             return this.mFacingMode;

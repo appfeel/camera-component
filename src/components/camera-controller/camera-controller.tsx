@@ -7,6 +7,7 @@ import camIcon from '../../assets/icons/camera-reverse.svg';
 import backIcon from '../../assets/icons/caret-back.svg';
 import ellipse from '../../assets/icons/ellipse.svg';
 import galleryIcon from '../../assets/icons/image-outline.svg';
+import transformIcon from '../../assets/icons/repeat-outline.svg';
 import { Webcam } from '../../utils/webcam';
 import { CamOrientation } from '../../utils/webcam.types';
 import { CamMode } from '../camera-component/types';
@@ -161,6 +162,10 @@ export class CameraController {
         this.backButton.emit();
     }
 
+    handleTransformButton() {
+        this.webcam.transform();
+    }
+
     handleOpenGallery() {
         this.imageInput.value = '';
         this.imageInput.click();
@@ -205,6 +210,9 @@ export class CameraController {
 
                 <div role="button" class="cam-button absolute left" onClick={() => this.handleBackButton()}>
                     <img class="lateral-icon back-icon" src={backIcon} alt="" />
+                </div>
+                <div role="button" class="cam-button absolute left100" onClick={() => this.handleTransformButton()}>
+                    <img class="lateral-icon" src={transformIcon} alt="" />
                 </div>
                 <div role="button" id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
                     <img class="circle" src={ellipse} alt="" />
