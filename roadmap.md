@@ -6,3 +6,4 @@
 - [ ] Button effects
 - [ ] Image effects (sepia, black/white, ...)
 - [ ] Video recorder
+- [ ] Allow multiple image formats (png, jpeg, quality, base64, blob, ...)
