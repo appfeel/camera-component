@@ -15,7 +15,7 @@ import ssl
 import os
 
 certFile = os.path.join(os.path.dirname(__file__), 'server.pem')
-httpd = BaseHTTPServer.HTTPServer(('192.168.1.130', 4443), SimpleHTTPServer.SimpleHTTPRequestHandler)
+httpd = BaseHTTPServer.HTTPServer(('192.168.1.135', 4443), SimpleHTTPServer.SimpleHTTPRequestHandler)
 httpd.socket = ssl.wrap_socket(httpd.socket, certfile=certFile, server_side=True)
 
 if len(sys.argv) > 1:

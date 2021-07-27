@@ -1,6 +1,13 @@
-/* eslint-disable jsx-a11y/media-has-caption, linebreak-style */
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import { Component, h, Element, Method, Event, EventEmitter, Prop, State } from '@stencil/core';
 
+import camIcon from '../../assets/icons/camera-reverse.svg';
+import backIcon from '../../assets/icons/caret-back.svg';
+import ellipse from '../../assets/icons/ellipse.svg';
+import galleryIcon from '../../assets/icons/image-outline.svg';
+import transformIcon from '../../assets/icons/repeat-outline.svg';
 import { Webcam } from '../../utils/webcam';
 import { CamOrientation } from '../../utils/webcam.types';
 import { CamMode } from '../camera-component/types';
@@ -155,6 +162,10 @@ export class CameraController {
         this.backButton.emit();
     }
 
+    handleTransformButton() {
+        this.webcam.transform();
+    }
+
     handleOpenGallery() {
         this.imageInput.value = '';
         this.imageInput.click();
@@ -167,9 +178,9 @@ export class CameraController {
     renderGalleryButton() {
         if (this.allowGallery) {
             return (
-                <ion-fab-button class="cam-button absolute right100" onClick={() => this.handleOpenGallery()}>
-                    <ion-icon class="lateral-icon" name="image-outline" />
-                </ion-fab-button>
+                <div role="button" class="cam-button absolute right100" onClick={() => this.handleOpenGallery()}>
+                    <img class="lateral-icon" src={galleryIcon} alt="" />
+                </div>
             );
         }
         return null;
@@ -197,16 +208,19 @@ export class CameraController {
                     onInput={() => this.loadImage()}
                 />
 
-                <ion-fab-button class="cam-button absolute left" onClick={() => this.handleBackButton()}>
-                    <ion-icon class="lateral-icon" name="caret-back" />
-                </ion-fab-button>
-                <ion-fab-button id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
-                    <ion-icon class="circle" name="ellipse" />
-                </ion-fab-button>
+                <div role="button" class="cam-button absolute left" onClick={() => this.handleBackButton()}>
+                    <img class="lateral-icon back-icon" src={backIcon} alt="" />
+                </div>
+                <div role="button" class="cam-button absolute left100" onClick={() => this.handleTransformButton()}>
+                    <img class="lateral-icon" src={transformIcon} alt="" />
+                </div>
+                <div role="button" id="takePicButton" class="cam-button absolute snap-button center" onClick={() => this.takePicture()}>
+                    <img class="circle" src={ellipse} alt="" />
+                </div>
                 {this.renderGalleryButton()}
-                <ion-fab-button class="cam-button absolute right20" onClick={() => this.flipCam()}>
-                    <ion-icon class="lateral-icon" name="camera-reverse" />
-                </ion-fab-button>
+                <div role="button" class="cam-button absolute right20" onClick={() => this.flipCam()}>
+                    <img class="lateral-icon flip-icon" src={camIcon} alt="" />
+                </div>
             </div>,
         ];
     }
