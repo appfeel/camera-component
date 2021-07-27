@@ -268,12 +268,9 @@ Type: `Promise<void>`
 ```mermaid
 graph TD;
   camera-component --> camera-controller
-  camera-controller --> ion-fab-button
-  camera-controller --> ion-icon
   camera-controller --> ion-footer
   camera-controller --> ion-button
-  ion-fab-button --> ion-icon
-  ion-fab-button --> ion-ripple-effect
+  camera-controller --> ion-icon
   ion-button --> ion-ripple-effect
   style camera-component fill:#f9f,stroke:#333,stroke-width:4px
 ```
@@ -365,20 +362,16 @@ Type: `Promise<void>`
 
 ### Depends on
 
-- ion-fab-button
-- ion-icon
 - ion-footer
 - ion-button
+- ion-icon
 
 ### Graph
 ```mermaid
 graph TD;
-  camera-controller --> ion-fab-button
-  camera-controller --> ion-icon
   camera-controller --> ion-footer
   camera-controller --> ion-button
-  ion-fab-button --> ion-icon
-  ion-fab-button --> ion-ripple-effect
+  camera-controller --> ion-icon
   ion-button --> ion-ripple-effect
   camera-component --> camera-controller
   style camera-controller fill:#f9f,stroke:#333,stroke-width:4px
@@ -397,3 +390,4 @@ graph TD;
 - [ ] Button effects
 - [ ] Image effects (sepia, black/white, ...)
 - [ ] Video recorder
+- [ ] Allow multiple image formats (png, jpeg, quality, base64, blob, ...)

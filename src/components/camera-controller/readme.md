@@ -80,20 +80,16 @@ Type: `Promise<void>`
 
 ### Depends on
 
-- ion-fab-button
-- ion-icon
 - ion-footer
 - ion-button
+- ion-icon
 
 ### Graph
 ```mermaid
 graph TD;
-  camera-controller --> ion-fab-button
-  camera-controller --> ion-icon
   camera-controller --> ion-footer
   camera-controller --> ion-button
-  ion-fab-button --> ion-icon
-  ion-fab-button --> ion-ripple-effect
+  camera-controller --> ion-icon
   ion-button --> ion-ripple-effect
   camera-component --> camera-controller
   style camera-controller fill:#f9f,stroke:#333,stroke-width:4px
