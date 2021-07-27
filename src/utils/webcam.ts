@@ -115,7 +115,7 @@ export class Webcam {
      * Select camera based on facingMode
      */
     selectCamera(isFlip = false) {
-        // iPhone:
+        // iPhone: https://webrtc.github.io/samples/src/content/devices/input-output/
         // {deviceId: "AB927975C8778829642E82A0F73C8FC6E5CE087D", kind: "videoinput", label: "Càmera del darrere", groupId: "", toJSON: function}
         // {deviceId: "21F79D5A972EBF3041CDFF6E16A0F11F39D8B372", kind: "videoinput", label: "Càmera del davant", groupId: "", toJSON: function}
         if (isFlip && this.mSelectedDeviceId) {
