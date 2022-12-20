@@ -216,6 +216,10 @@ See [documentation on Github](https://github.com/appfeel/camera-component/blob/m
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+Camera component, this is the main component.
+
 ## Properties
 
 | Property            | Attribute              | Description                                                      | Type                                                | Default                      |
@@ -245,7 +249,7 @@ Method to open the camera
 
 Type: `Promise<void>`
 
-
+void
 
 ### `stop() => Promise<void>`
 
@@ -255,7 +259,7 @@ Method to stop the camera
 
 Type: `Promise<void>`
 
-
+void
 
 
 ## Dependencies
@@ -286,6 +290,10 @@ graph TD;
 
 <!-- Auto Generated Below -->
 
+
+## Overview
+
+Camera controller component
 
 ## Properties
 
@@ -319,7 +327,7 @@ Switch between front and back cam
 
 Type: `Promise<void>`
 
-
+void
 
 ### `resize(width: number, height: number) => Promise<void>`
 
@@ -329,7 +337,7 @@ Change the video element size
 
 Type: `Promise<void>`
 
-
+void
 
 ### `stopWebcam() => Promise<void>`
 
@@ -340,7 +348,7 @@ Emits webcamStop event
 
 Type: `Promise<void>`
 
-
+void
 
 ### `takePicture() => Promise<void>`
 
@@ -351,7 +359,7 @@ Emits picture event
 
 Type: `Promise<void>`
 
-
+void
 
 
 ## Dependencies

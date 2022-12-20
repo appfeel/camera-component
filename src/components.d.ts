@@ -90,6 +90,14 @@ export namespace Components {
         "width": number;
     }
 }
+export interface CameraComponentCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCameraComponentElement;
+}
+export interface CameraControllerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCameraControllerElement;
+}
 declare global {
     interface HTMLCameraComponentElement extends Components.CameraComponent, HTMLStencilElement {
     }
@@ -121,15 +129,15 @@ declare namespace LocalJSX {
         /**
           * Event emitted when back button is pushed
          */
-        "onBackButton"?: (event: CustomEvent<void>) => void;
+        "onBackButton"?: (event: CameraComponentCustomEvent<void>) => void;
         /**
           * Event emitted when snap
          */
-        "onPicture"?: (event: CustomEvent<any>) => void;
+        "onPicture"?: (event: CameraComponentCustomEvent<any>) => void;
         /**
           * Event emitted when cam stop
          */
-        "onWebcamStop"?: (event: CustomEvent<any>) => void;
+        "onWebcamStop"?: (event: CameraComponentCustomEvent<any>) => void;
         /**
           * Camera selected - user: front camera - environtment: back camera
          */
@@ -159,15 +167,15 @@ declare namespace LocalJSX {
         /**
           * Event emitted when back button is pushed
          */
-        "onBackButton"?: (event: CustomEvent<void>) => void;
+        "onBackButton"?: (event: CameraControllerCustomEvent<void>) => void;
         /**
           * Event emitted when snap
          */
-        "onPicture"?: (event: CustomEvent<any>) => void;
+        "onPicture"?: (event: CameraControllerCustomEvent<any>) => void;
         /**
           * Event emitted when cam is stoped
          */
-        "onWebcamStop"?: (event: CustomEvent<any>) => void;
+        "onWebcamStop"?: (event: CameraControllerCustomEvent<any>) => void;
         /**
           * Selected camera - user: front camera - environtment: back camera
          */

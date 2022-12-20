@@ -5,6 +5,10 @@
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+Camera controller component
+
 ## Properties
 
 | Property            | Attribute              | Description                                                      | Type                                                | Default                      |
@@ -37,7 +41,7 @@ Switch between front and back cam
 
 Type: `Promise<void>`
 
-
+void
 
 ### `resize(width: number, height: number) => Promise<void>`
 
@@ -47,7 +51,7 @@ Change the video element size
 
 Type: `Promise<void>`
 
-
+void
 
 ### `stopWebcam() => Promise<void>`
 
@@ -58,7 +62,7 @@ Emits webcamStop event
 
 Type: `Promise<void>`
 
-
+void
 
 ### `takePicture() => Promise<void>`
 
@@ -69,7 +73,7 @@ Emits picture event
 
 Type: `Promise<void>`
 
-
+void
 
 
 ## Dependencies

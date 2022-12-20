@@ -5,6 +5,10 @@
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+Camera component, this is the main component.
+
 ## Properties
 
 | Property            | Attribute              | Description                                                      | Type                                                | Default                      |
@@ -34,7 +38,7 @@ Method to open the camera
 
 Type: `Promise<void>`
 
-
+void
 
 ### `stop() => Promise<void>`
 
@@ -44,7 +48,7 @@ Method to stop the camera
 
 Type: `Promise<void>`
 
-
+void
 
 
 ## Dependencies
