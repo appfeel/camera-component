@@ -14,7 +14,7 @@ export class Webcam {
 
     static instance: Webcam;
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    // eslint-disable-next-line @typescript-eslint/no-empty-function, no-useless-constructor
     private constructor() { }
 
     /**
@@ -34,8 +34,12 @@ export class Webcam {
      * @param canvasElement
      * @param snapSoundElement
      */
-    static init(webcamElement: HTMLVideoElement,
-        facingMode: CamOrientation = CamOrientation.user, canvasElement: HTMLCanvasElement = null, snapSoundElement: HTMLAudioElement = null) {
+    static init(
+        webcamElement: HTMLVideoElement,
+        facingMode: CamOrientation = CamOrientation.user,
+        canvasElement: HTMLCanvasElement = null,
+        snapSoundElement: HTMLAudioElement = null,
+    ) {
         let { instance } = Webcam;
 
         if (!instance) {

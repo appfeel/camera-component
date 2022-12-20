@@ -4,10 +4,12 @@ module.exports = {
     "plugins": [
         "import",
         "@typescript-eslint",
+        "react",
         // "prettier"
     ],
     "extends": [
         "airbnb-typescript",
+        "airbnb",
         "airbnb/hooks",
         // "prettier",
         "plugin:@typescript-eslint/recommended",
@@ -56,6 +58,8 @@ module.exports = {
         // }],
         "@typescript-eslint/explicit-module-boundary-types": 0,
         "no-console": 1,
+        "no-empty": [0],
+        "no-param-reassign": [1],
         // "prettier/prettier": ["error", { "singleQuote": true }],
         "import/prefer-default-export": 0,
         "import/no-extraneous-dependencies": 1,
@@ -77,8 +81,28 @@ module.exports = {
         "react/prop-types": 0,
         "react/jsx-one-expression-per-line": 0,
         "react/jsx-props-no-spreading": 0,
+        "import/extensions": [
+           "error",
+           "ignorePackages",
+           {
+             "js": "never",
+             "jsx": "never",
+             "ts": "never",
+             "tsx": "never"
+           }
+        ],
+        "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }],
+        "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"]    
     },
     "settings": {
+        "import/extensions": [".js", ".jsx", ".tsx", ".ts"],
+        "import/parsers": {
+            "@typescript-eslint/parser": [".ts", ".tsx"],
+        },
         "import/resolver": {
             "babel-module": {},
             "node": {
@@ -86,7 +110,8 @@ module.exports = {
                 "moduleDirectory": ["node_modules", "src/"]
             },
             "typescript": {
-                "alwaysTryTypes": true
+                "alwaysTryTypes": true,
+                "project": ["tsconfig.json"]
             }
         }
     }
