@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
 
-<header>
+<head>
     <script type="module" src="node_modules/camera-component/dist/camera-component/camera-component.esm.js"></script>
     <style>
-        html, body, #cam-wrapper {
+        html,
+        body,
+        #cam-wrapper {
             width: 100%;
             height: 100%;
         }
     </style>
-</header>
+</head>
 
 <body>
     <div id="cam-wrapper">
@@ -18,24 +20,24 @@
     <button onclick="cam.stopWebcam()">Start cam</button>
     <button onclick="cam.flipCam()">Flip cam</button>
     <button onclick="cam.takePicture()">Take picture</button>
+    <script>
+        const cam = document.getElementById('cam');
+        cam.addEventListener('picture', picture);
+        cam.addEventListener('backButton', backButton);
+        cam.addEventListener('webcamStop', webcamStop);
+
+        function picture(e) {
+            console.log('picture', e.detail.snapshot);
+        }
+
+        function backButton() {
+            console.log('backButton');
+        }
+
+        function webcamStop() {
+            console.log('webcamStop');
+        }
+    </script>
 </body>
 
-<script>
-    const cam = document.getElementById('cam');
-    cam.addEventListener('picture', picture);
-    cam.addEventListener('backButton', backButton);
-    cam.addEventListener('webcamStop', webcamStop);
-
-    function picture(e) {
-        console.log('picture', e.detail.snapshot);
-    }
-
-    function backButton() {
-        console.log('backButton');
-    }
-
-    function webcamStop() {
-        console.log('webcamStop');
-    }
-</script>
 </html>
